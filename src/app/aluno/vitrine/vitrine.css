@@ -1,0 +1,149 @@
+/*
+  Layout geral: pags internas.
+  Sidebar à esquerda e conteúdo à direita.
+*/
+.app-page {
+  min-height: 100vh;
+  display: flex;
+  background: var(--viva-background);
+}
+
+.page-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.content-area {
+  padding: 28px;
+}
+
+/* Cabeçalho da área de conteúdo */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.page-header h2 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--viva-text);
+}
+
+.page-header p {
+  margin: 6px 0 0;
+  color: var(--viva-muted);
+}
+
+/* o botão do Bootstrap com cor do sistema  */
+.btn-primary {
+  background: var(--viva-primary);
+  border-color: var(--viva-primary);
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+.btn-primary:hover {
+  background: var(--viva-primary-dark);
+  border-color: var(--viva-primary-dark);
+}
+
+/* Grid dos projetos */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+/* Card de projeto */
+.project-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+}
+
+/* Área visual superior do card */
+.project-cover {
+  height: 150px;
+  background: linear-gradient(135deg, var(--viva-primary-dark), var(--viva-secondary));
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 48px;
+}
+
+.project-body {
+  padding: 22px;
+}
+
+.status {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.status.approved {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.project-body h3 {
+  margin: 0 0 10px;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--viva-text);
+}
+
+.project-body p {
+  color: var(--viva-muted);
+  margin-bottom: 16px;
+}
+
+/* Tags/tecnologias do projeto */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.tags span {
+  background: var(--viva-primary-soft);
+  color: var(--viva-primary);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Link para abrir detalhes */
+.project-link {
+  color: var(--viva-primary);
+  text-decoration: none;
+  font-weight: 800;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.project-link:hover {
+  color: var(--viva-primary-dark);
+}
+
+@media (max-width: 1000px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+}

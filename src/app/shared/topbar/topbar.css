@@ -1,0 +1,171 @@
+/*
+  Barra superior das telas internas.
+*/
+.topbar {
+  min-height: 86px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 18px 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--viva-text);
+}
+
+.topbar p {
+  margin: 4px 0 0;
+  color: var(--viva-muted);
+  font-size: 14px;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Caixa de busca */
+.search-box {
+  width: 360px;
+  height: 44px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 0 14px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  background: #f9fafb;
+}
+
+.search-box i {
+  color: var(--viva-muted);
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  font-size: 14px;
+}
+
+/* Botão do sino */
+.icon-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  color: #374151;
+  text-decoration: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #ffffff;
+}
+
+.icon-button:hover {
+  background: var(--viva-primary-soft);
+  color: var(--viva-primary);
+}
+
+/* Menu do usuário */
+.user-menu-wrapper {
+  position: relative;
+}
+
+.user-button {
+  height: 48px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 0 12px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--viva-primary);
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 800;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.user-info strong {
+  font-size: 14px;
+  color: var(--viva-text);
+}
+
+.user-info span {
+  font-size: 12px;
+  color: var(--viva-muted);
+}
+
+/* Dropdown que abre qnd clicar no usuário */
+.user-dropdown {
+  position: absolute;
+  right: 0;
+  top: 58px;
+  width: 220px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+  padding: 8px;
+  z-index: 10;
+}
+
+.user-dropdown a {
+  min-height: 42px;
+  border-radius: 12px;
+  padding: 0 12px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  color: #374151;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.user-dropdown a:hover {
+  background: var(--viva-primary-soft);
+  color: var(--viva-primary);
+}
+
+.user-dropdown a.logout {
+  color: #b91c1c;
+}
+
+.user-dropdown a.logout:hover {
+  background: #fee2e2;
+  color: #991b1b;
+}

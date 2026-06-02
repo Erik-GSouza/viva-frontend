@@ -1,1 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+/*
+  Variáveis globais de cores do sistema
+  pra poder reaproveitar as mesmas cores em várias telas
+*/
+:root {
+  --viva-primary: #0f4c81;
+  --viva-primary-dark: #0b355d;
+  --viva-primary-soft: #eaf4fb;
+
+  --viva-secondary: #176b9c;
+  --viva-accent: #1f7ea8;
+
+  --viva-text: #111827;
+  --viva-muted: #6b7280;
+  --viva-border: #d1d5db;
+  --viva-background: #f4f8fb;
+}
+
+/* Estilos globais do projeto */
+body {
+  margin: 0;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+  background-color: var(--viva-background);
+  color: var(--viva-text);
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}

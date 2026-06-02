@@ -1,0 +1,233 @@
+<section class="coordenador-page">
+  <!-- Menu lateral do coordenador -->
+  <app-sidebar perfil="coordenador"></app-sidebar>
+
+  <main class="page-content">
+    <!-- Topbar adaptada do coordenador -->
+    <app-topbar
+      titulo="Dashboard"
+      nomeUsuario="Mariana Silva"
+      perfil="Coordenadora"
+      perfilTipo="coordenador"
+    ></app-topbar>
+
+    <div class="content-area">
+      <!-- Cabeçalho da página -->
+      <div class="page-header">
+        <div>
+          <h2>Visão geral da plataforma</h2>
+          <p>Acompanhe os projetos, cursos, tecnologias e indicadores acadêmicos.</p>
+        </div>
+
+        <!-- Esse botão poderá gerar um relatório rápido futuramente -->
+        <a class="btn-export" routerLink="/coordenador/relatorios">
+          <i class="bi bi-file-earmark-pdf"></i>
+          Exportar
+        </a>
+      </div>
+
+      <!-- Cards principais do dashboard -->
+      <div class="stats-grid">
+        <article class="stat-card">
+          <div class="stat-icon primary">
+            <i class="bi bi-folder2-open"></i>
+          </div>
+
+          <div>
+            <span>Total de Projetos</span>
+            <strong>234</strong>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon info">
+            <i class="bi bi-calendar-check"></i>
+          </div>
+
+          <div>
+            <span>Projetos neste semestre</span>
+            <strong>48</strong>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon success">
+            <i class="bi bi-mortarboard"></i>
+          </div>
+
+          <div>
+            <span>Cursos ativos</span>
+            <strong>6</strong>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon warning">
+            <i class="bi bi-graph-up-arrow"></i>
+          </div>
+
+          <div>
+            <span>Taxa de aprovação</span>
+            <strong>82%</strong>
+          </div>
+        </article>
+      </div>
+
+      <!-- area dos gráficos visuais -->
+      <div class="dashboard-grid">
+        <!-- grafico simples de projetos por semestre -->
+        <section class="chart-card">
+          <div class="card-header">
+            <h3>Projetos por semestre</h3>
+            <span>Últimos períodos</span>
+          </div>
+
+          <div class="bar-chart">
+            <div class="bar-item">
+              <span>2024.1</span>
+              <div class="bar-track">
+                <!-- 
+                largura provisoria da barra
+                depois esse valor virá do back-end ou de uma variável no ts por ex
+                -->
+                <div class="bar-fill" style="width: 55%;"></div>
+              </div>
+              <strong>32</strong>
+            </div>
+
+            <div class="bar-item">
+              <span>2024.2</span>
+              <div class="bar-track">
+                <div class="bar-fill" style="width: 72%;"></div>
+              </div>
+              <strong>41</strong>
+            </div>
+
+            <div class="bar-item">
+              <span>2025.1</span>
+              <div class="bar-track">
+                <div class="bar-fill" style="width: 84%;"></div>
+              </div>
+              <strong>48</strong>
+            </div>
+
+            <div class="bar-item">
+              <span>2025.2</span>
+              <div class="bar-track">
+                <div class="bar-fill" style="width: 100%;"></div>
+              </div>
+              <strong>57</strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tecnologias mais usadas -->
+        <section class="chart-card">
+          <div class="card-header">
+            <h3>Tecnologias mais usadas</h3>
+            <span>Tags cadastradas nos projetos</span>
+          </div>
+
+          <div class="tech-list">
+            <div class="tech-item">
+              <span>Angular</span>
+              <strong>78 projetos</strong>
+            </div>
+
+            <div class="tech-item">
+              <span>Node.js</span>
+              <strong>64 projetos</strong>
+            </div>
+
+            <div class="tech-item">
+              <span>MySQL</span>
+              <strong>59 projetos</strong>
+            </div>
+
+            <div class="tech-item">
+              <span>Bootstrap</span>
+              <strong>46 projetos</strong>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Projetos recentes -->
+      <section class="recent-projects">
+        <div class="card-header">
+          <div>
+            <h3>Projetos recentes</h3>
+            <span>Últimos projetos submetidos na plataforma</span>
+          </div>
+
+          <!-- Vai para Gestão de Projetos, não para a Vitrine -->
+          <a routerLink="/coordenador/projetos">Ver todos</a>
+        </div>
+
+        <div class="table-responsive">
+          <table class="projects-table">
+            <thead>
+              <tr>
+                <th>Projeto</th>
+                <th>Curso</th>
+                <th>Orientador</th>
+                <th>Status</th>
+                <th>Envio</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>
+                  <strong>SaúdeConnect</strong>
+                  <span>Ana Beatriz Ferreira</span>
+                </td>
+
+                <td>ADS</td>
+                <td>Prof. Carlos Mendes</td>
+
+                <td>
+                  <span class="status approved">Aprovado</span>
+                </td>
+
+                <td>10/11/2025</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>RecifeMaps</strong>
+                  <span>Gabriel Nascimento</span>
+                </td>
+
+                <td>ADS</td>
+                <td>Prof. Rafael Oliveira</td>
+
+                <td>
+                  <span class="status review">Revisão solicitada</span>
+                </td>
+
+                <td>15/11/2025</td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>EducaLab</strong>
+                  <span>Larissa Costa</span>
+                </td>
+
+                <td>Design</td>
+                <td>Prof. Carla Souza</td>
+
+                <td>
+                  <span class="status pending">Pendente</span>
+                </td>
+
+                <td>18/11/2025</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+</section>

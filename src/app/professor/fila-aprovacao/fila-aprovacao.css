@@ -1,0 +1,301 @@
+/*
+  Layout principal da tela do professor
+  Sidebar a esquerda e conteúdo a direita
+*/
+.professor-page {
+  min-height: 100vh;
+  display: flex;
+  background: var(--viva-background);
+}
+
+.page-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.content-area {
+  padding: 28px;
+}
+
+/* Cabeçalho da página */
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h2 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--viva-text);
+}
+
+.page-header p {
+  margin: 6px 0 0;
+  color: var(--viva-muted);
+}
+
+/* Cards pequenos de resumo */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.summary-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+}
+
+.summary-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 22px;
+}
+
+/* Cores dos cards de resumo */
+.summary-icon.warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.summary-icon.info {
+  background: var(--viva-primary-soft);
+  color: var(--viva-primary);
+}
+
+.summary-icon.success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.summary-card strong {
+  display: block;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--viva-text);
+}
+
+.summary-card span {
+  color: var(--viva-muted);
+  font-weight: 600;
+}
+
+/* Divide a página em lista de projetos e card lateral */
+.approval-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+}
+
+/* Lista dos projetos que precisam de atenção */
+.approval-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Card de cada projeto */
+.approval-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 22px;
+  padding: 22px;
+
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+}
+
+.project-info h3 {
+  margin: 10px 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--viva-text);
+}
+
+.project-info p {
+  color: var(--viva-muted);
+  margin-bottom: 14px;
+}
+
+/* Status do projeto */
+.status {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.status.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status.resent {
+  background: var(--viva-primary-soft);
+  color: var(--viva-primary);
+}
+
+/* Informações como aluno, curso e semestre */
+.project-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 14px;
+  color: #4b5563;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.project-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Tags/tecnologias */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tags span {
+  background: var(--viva-primary-soft);
+  color: var(--viva-primary);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Área do botão do card */
+.project-actions {
+  display: flex;
+  align-items: center;
+}
+
+.btn-view {
+  min-width: 140px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--viva-primary);
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 800;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-view:hover {
+  background: var(--viva-primary-dark);
+}
+
+/* Card lateral de orientandos */
+.orientandos-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 22px;
+  padding: 20px;
+  height: fit-content;
+
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.card-title h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--viva-text);
+}
+
+.card-title a {
+  color: var(--viva-primary);
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.orientando-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid #f3f4f6;
+}
+
+.orientando-item:first-of-type {
+  border-top: none;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--viva-primary);
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 800;
+}
+
+.orientando-item strong {
+  display: block;
+  color: var(--viva-text);
+  font-size: 14px;
+}
+
+.orientando-item span {
+  color: var(--viva-muted);
+  font-size: 13px;
+}
+
+/* Responsividade */
+@media (max-width: 1100px) {
+  .approval-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .approval-card {
+    flex-direction: column;
+  }
+
+  .project-actions {
+    justify-content: flex-start;
+  }
+}

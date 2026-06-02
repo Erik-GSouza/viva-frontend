@@ -1,0 +1,315 @@
+/*
+  Layout principal da tela do coordenador
+  Sidebar a esquerda e conteúdo a direita
+*/
+.coordenador-page {
+  min-height: 100vh;
+  display: flex;
+  background: var(--viva-background);
+}
+
+.page-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.content-area {
+  padding: 28px;
+}
+
+/* Cabeçalho da página */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.page-header h2 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--viva-text);
+}
+
+.page-header p {
+  margin: 6px 0 0;
+  color: var(--viva-muted);
+}
+
+/* Botão de exportar */
+.btn-export {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 14px;
+  background: var(--viva-primary);
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 800;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-export:hover {
+  background: var(--viva-primary-dark);
+}
+
+/* Cards de indicadores */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 22px;
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+}
+
+.stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 22px;
+}
+
+/* Cores dos ícones dos cards */
+.stat-icon.primary {
+  background: var(--viva-primary-soft);
+  color: var(--viva-primary);
+}
+
+.stat-icon.info {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.stat-icon.success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.stat-icon.warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.stat-card span {
+  display: block;
+  color: var(--viva-muted);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.stat-card strong {
+  display: block;
+  color: var(--viva-text);
+  font-size: 28px;
+  font-weight: 800;
+}
+
+/* Grid com os gráficos visuais */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.chart-card,
+.recent-projects {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 22px;
+  padding: 22px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+}
+
+/* Cabeçalho dos cards */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--viva-text);
+}
+
+.card-header span {
+  color: var(--viva-muted);
+  font-size: 14px;
+}
+
+.card-header a {
+  color: var(--viva-primary);
+  text-decoration: none;
+  font-weight: 800;
+}
+
+/* Gráfico de barras simples feito com CSS */
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.bar-item {
+  display: grid;
+  grid-template-columns: 70px 1fr 40px;
+  align-items: center;
+  gap: 12px;
+}
+
+.bar-item span {
+  color: #4b5563;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.bar-item strong {
+  color: var(--viva-text);
+  font-weight: 800;
+}
+
+.bar-track {
+  height: 12px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--viva-primary-dark), var(--viva-secondary));
+  border-radius: 999px;
+}
+
+/* Lista de tecnologias */
+.tech-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tech-item {
+  min-height: 50px;
+  border-radius: 16px;
+  background: var(--viva-primary-soft);
+  padding: 0 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tech-item span {
+  color: var(--viva-primary-dark);
+  font-weight: 800;
+}
+
+.tech-item strong {
+  color: var(--viva-primary);
+  font-size: 14px;
+}
+
+/* Tabela de projetos recentes */
+.projects-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.projects-table th {
+  text-align: left;
+  color: var(--viva-muted);
+  font-size: 13px;
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.projects-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid #f3f4f6;
+  color: #374151;
+  font-weight: 600;
+}
+
+.projects-table td strong {
+  display: block;
+  color: var(--viva-text);
+  font-weight: 800;
+}
+
+.projects-table td span {
+  display: block;
+  color: var(--viva-muted);
+  font-size: 13px;
+}
+
+/* Status dos projetos */
+.status {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px !important;
+  font-weight: 800;
+}
+
+.status.approved {
+  background: #dcfce7;
+  color: #166534 !important;
+}
+
+.status.review {
+  background: var(--viva-primary-soft);
+  color: var(--viva-primary) !important;
+}
+
+.status.pending {
+  background: #fef3c7;
+  color: #92400e !important;
+}
+
+/* Responsividade simples */
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

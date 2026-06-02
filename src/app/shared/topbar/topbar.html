@@ -1,0 +1,57 @@
+<header class="topbar">
+  <!-- Título da página -->
+  <div>
+    <h1>{{ titulo }}</h1>
+    <p>Bem-vindo ao Observatório de Projetos Integradores.</p>
+  </div>
+
+  <div class="topbar-actions">
+    <!-- Campo de busca -->
+    <div class="search-box">
+      <i class="bi bi-search"></i>
+      <input type="text" placeholder="Buscar projetos, tecnologias ou autores..." />
+    </div>
+
+    <!-- Sino de notificações -->
+    <a class="icon-button" [routerLink]="notificacoesRoute">
+      <i class="bi bi-bell"></i>
+    </a>
+
+    <!-- Menu do usuário -->
+    <div class="user-menu-wrapper">
+      <button type="button" class="user-button" (click)="alternarMenu()">
+        <!-- Mostra a primeira letra do nome do usuário -->
+        <div class="avatar">
+          {{ nomeUsuario.charAt(0) }}
+        </div>
+
+        <div class="user-info">
+          <strong>{{ nomeUsuario }}</strong>
+          <span>{{ perfil }}</span>
+        </div>
+
+        <i class="bi bi-chevron-down"></i>
+      </button>
+
+      <!-- Menu que aparece ao clicar no usuário -->
+      @if (menuAberto) {
+        <div class="user-dropdown">
+          <a [routerLink]="perfilRoute">
+            <i class="bi bi-person"></i>
+            Editar Perfil
+          </a>
+
+          <a [routerLink]="configuracoesRoute">
+            <i class="bi bi-gear"></i>
+            Configurações
+          </a>
+
+          <a routerLink="/login" class="logout">
+            <i class="bi bi-box-arrow-left"></i>
+            Sair da conta
+          </a>
+        </div>
+      }
+    </div>
+  </div>
+</header>

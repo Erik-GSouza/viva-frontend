@@ -1,0 +1,84 @@
+<section class="app-page">
+  <!-- Menu lateral do aluno -->
+  <app-sidebar perfil="aluno"></app-sidebar>
+
+  <main class="page-content">
+    <!-- Barra superior -->
+    <app-topbar
+      titulo="Vitrine"
+      nomeUsuario="Ana Beatriz"
+      perfil="Aluno"
+      perfilTipo="aluno"
+    ></app-topbar>
+
+    <div class="content-area">
+      <div class="page-header">
+        <div>
+          <h2>Projetos em destaque</h2>
+          <p>Explore projetos aprovados desenvolvidos por alunos da instituição.</p>
+        </div>
+
+        <a class="btn btn-primary" routerLink="/aluno/meus-projetos">
+          Meus Projetos
+        </a>
+      </div>
+
+      <!-- Cards só de exemplo. Depois esses dados virão do back-end. -->
+      <div class="projects-grid">
+        <article class="project-card">
+          <div class="project-cover">
+            <i class="bi bi-heart-pulse"></i>
+          </div>
+
+          <div class="project-body">
+            <span class="status approved">Aprovado</span>
+
+            <h3>SaúdeConnect</h3>
+
+            <p>
+              Plataforma para conectar pacientes e profissionais de saúde em atendimentos online.
+            </p>
+
+            <div class="tags">
+              <span>Angular</span>
+              <span>Node.js</span>
+              <span>MySQL</span>
+            </div>
+
+            <a class="project-link" routerLink="/aluno/projetos/1">
+              Ver projeto
+              <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
+        </article>
+
+        <article class="project-card">
+          <div class="project-cover">
+            <i class="bi bi-map"></i>
+          </div>
+
+          <div class="project-body">
+            <span class="status approved">Aprovado</span>
+
+            <h3>RecifeMaps</h3>
+
+            <p>
+              Guia digital para destacar pontos turísticos, culturais e históricos da cidade.
+            </p>
+
+            <div class="tags">
+              <span>TypeScript</span>
+              <span>API</span>
+              <span>UX</span>
+            </div>
+
+            <a class="project-link" routerLink="/aluno/projetos/2">
+              Ver projeto
+              <i class="bi bi-arrow-right"></i>
+            </a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </main>
+</section>

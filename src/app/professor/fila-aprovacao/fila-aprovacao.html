@@ -1,0 +1,175 @@
+<section class="professor-page">
+  <!-- Menu lateral do professor -->
+  <app-sidebar perfil="professor"></app-sidebar>
+
+  <main class="page-content">
+    <!-- Topbar adaptada para o prof -->
+    <app-topbar
+      titulo="Fila de Aprovação"
+      nomeUsuario="Carlos Mendes"
+      perfil="Professor"
+      perfilTipo="professor"
+    ></app-topbar>
+
+    <div class="content-area">
+      <!-- Cabeçalho da página -->
+      <div class="page-header">
+        <div>
+          <h2>Projetos aguardando avaliação</h2>
+          <p>Analise os projetos submetidos pelos alunos orientados.</p>
+        </div>
+      </div>
+
+      <!-- Cards de resumo -->
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="summary-icon warning">
+            <i class="bi bi-hourglass-split"></i>
+          </div>
+
+          <div>
+            <strong>8</strong>
+            <span>Pendentes</span>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon info">
+            <i class="bi bi-arrow-repeat"></i>
+          </div>
+
+          <div>
+            <strong>3</strong>
+            <span>Reenviados</span>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-icon success">
+            <i class="bi bi-check-circle"></i>
+          </div>
+
+          <div>
+            <strong>24</strong>
+            <span>Aprovados</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Área principal com projetos e orientandos -->
+      <div class="approval-layout">
+        <!-- Lista de projetos -->
+        <section class="approval-list">
+          <article class="approval-card">
+            <div class="project-info">
+              <span class="status pending">Pendente</span>
+
+              <h3>SaúdeConnect</h3>
+
+              <p>
+                Plataforma para conectar pacientes e profissionais de saúde em atendimentos online.
+              </p>
+
+              <div class="project-meta">
+                <span>
+                  <i class="bi bi-person"></i>
+                  Ana Beatriz Ferreira
+                </span>
+
+                <span>
+                  <i class="bi bi-mortarboard"></i>
+                  ADS · 6º Semestre
+                </span>
+              </div>
+
+              <div class="tags">
+                <span>Angular</span>
+                <span>Node.js</span>
+                <span>MySQL</span>
+              </div>
+            </div>
+
+            <div class="project-actions">
+              <a routerLink="/professor/projetos/1" class="btn-view">
+                Ver projeto
+                <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          </article>
+
+          <article class="approval-card">
+            <div class="project-info">
+              <span class="status resent">Reenviado</span>
+
+              <h3>RecifeMaps</h3>
+
+              <p>
+                Guia digital para destacar pontos turísticos, culturais e históricos da cidade.
+              </p>
+
+              <div class="project-meta">
+                <span>
+                  <i class="bi bi-person"></i>
+                  Gabriel Nascimento
+                </span>
+
+                <span>
+                  <i class="bi bi-mortarboard"></i>
+                  ADS · 4º Semestre
+                </span>
+              </div>
+
+              <div class="tags">
+                <span>TypeScript</span>
+                <span>API</span>
+                <span>UX</span>
+              </div>
+            </div>
+
+            <div class="project-actions">
+              <a routerLink="/professor/projetos/2" class="btn-view">
+                Ver projeto
+                <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          </article>
+        </section>
+
+        <!-- Card lateral com orientandos -->
+        <aside class="orientandos-card">
+          <div class="card-title">
+            <h3>Meus Orientandos</h3>
+            <a routerLink="/professor/orientandos">Ver todos</a>
+          </div>
+
+          <div class="orientando-item">
+            <div class="avatar">A</div>
+
+            <div>
+              <strong>Ana Beatriz</strong>
+              <span>Aguardando avaliação</span>
+            </div>
+          </div>
+
+          <div class="orientando-item">
+            <div class="avatar">G</div>
+
+            <div>
+              <strong>Gabriel Nascimento</strong>
+              <span>Projeto reenviado</span>
+            </div>
+          </div>
+
+          <div class="orientando-item">
+            <div class="avatar">L</div>
+
+            <div>
+              <strong>Larissa Costa</strong>
+              <span>Sem projeto enviado</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+</section>

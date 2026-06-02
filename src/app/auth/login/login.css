@@ -1,0 +1,240 @@
+/*
+  Tela inteira do login.
+  min-height: 100vh ocupa a altura toda da tela.
+*/
+.login-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eaf4fb 0%, #f4f8fb 50%, #e8f1f7 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+/*
+  Card principal do login.
+  Ele contém duas partes:
+  1. formulário
+  2. banner lateral
+*/
+.login-card {
+  width: 100%;
+  max-width: 1100px;
+  min-height: 650px;
+  background: #ffffff;
+  border-radius: 28px;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.12);
+  overflow: hidden;
+
+  /* Divide o card em duas colunas iguais */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Área do formulário */
+.login-form {
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Área da marca/logo */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 48px;
+}
+
+.brand-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: var(--viva-primary);
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 24px;
+}
+
+.brand h1 {
+  margin: 0;
+  font-weight: 800;
+  color: var(--viva-text);
+}
+
+.brand p {
+  margin: 0;
+  color: var(--viva-muted);
+  font-size: 14px;
+}
+
+/* Título e subtítulo do formulário */
+.login-header h2 {
+  font-weight: 800;
+  color: var(--viva-text);
+  margin-bottom: 8px;
+}
+
+.login-header p {
+  color: var(--viva-muted);
+  margin-bottom: 28px;
+}
+
+/*
+  Botões de seleção de perfil.
+  Usamos grid para deixar Aluno, Professor e Coordenador lado a lado.
+*/
+.perfil-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.perfil-selector button {
+  border: 1px solid var(--viva-border);
+  background: #ffffff;
+  color: #374151;
+  border-radius: 14px;
+  padding: 12px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.perfil-selector button i {
+  display: block;
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+/*
+  Classe aplicada ao perfil selecionado.
+  No HTML usamos class.active para ativar esse efeito bonitinho.
+*/
+.perfil-selector button.active {
+  background: var(--viva-primary);
+  color: #ffffff;
+  border-color: var(--viva-primary);
+  box-shadow: 0 10px 22px rgba(15, 76, 129, 0.22);
+}
+
+.form-label {
+  font-weight: 600;
+  color: #374151;
+}
+
+.form-control {
+  min-height: 48px;
+  border-radius: 12px;
+}
+
+/*
+  Quando o usuário clica em um input, fica com cor.
+*/
+.form-control:focus {
+  border-color: var(--viva-primary);
+  box-shadow: 0 0 0 4px rgba(15, 76, 129, 0.12);
+}
+
+/* Link de "Esqueci minha senha" */
+.forgot-password {
+  text-align: right;
+  margin-bottom: 24px;
+}
+
+.forgot-password a {
+  color: var(--viva-primary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.forgot-password a:hover {
+  color: var(--viva-primary-dark);
+}
+
+/* Botão principal de login */
+.btn-login {
+  width: 100%;
+  min-height: 50px;
+  border: none;
+  border-radius: 14px;
+  background: var(--viva-primary);
+  color: #ffffff;
+  font-weight: 700;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn-login:hover {
+  background: var(--viva-primary-dark);
+}
+
+/* Texto informando que o cadastro é feito pela coordenação */
+.login-note {
+  margin-top: 20px;
+  text-align: center;
+  color: var(--viva-muted);
+  font-size: 14px;
+}
+
+/* Banner lateral direito */
+.login-banner {
+  background: linear-gradient(135deg, #0b355d 0%, #0f4c81 55%, #176b9c 100%);
+  color: #ffffff;
+  padding: 56px;
+
+  display: flex;
+  align-items: end;
+}
+
+.login-banner .tag {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.18);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.login-banner h2 {
+  font-size: 42px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+
+.login-banner p {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 17px;
+  max-width: 420px;
+}
+
+/*
+  Responsividade:
+*/
+@media (max-width: 900px) {
+  .login-card {
+    grid-template-columns: 1fr;
+  }
+
+  .login-banner {
+    display: none;
+  }
+
+  .login-form {
+    padding: 32px;
+  }
+
+  .perfil-selector {
+    grid-template-columns: 1fr;
+  }
+}
