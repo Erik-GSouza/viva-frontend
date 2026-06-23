@@ -1,11 +1,13 @@
 <section class="login-page">
-  <!-- Card principal que divide a tela em formulário e bannerzinho lateral -->
   <div class="login-card">
 
-    <!-- Área esquerda: formulário de login -->
+    <!--
+      Lado esquerdo da tela:
+      aqui ficam a logo, o título, os campos de login e o botão.
+    -->
     <div class="login-form">
 
-      <!-- Logo/nome do sistema -->
+      <!-- Logo e nome do sistema -->
       <div class="brand">
         <div class="brand-icon">
           <i class="bi bi-mortarboard-fill"></i>
@@ -17,83 +19,100 @@
         </div>
       </div>
 
-      <!-- Título da tela -->
+      <!-- Texto inicial da tela -->
       <div class="login-header">
         <h2>Bem-vindo de volta</h2>
         <p>Acesse sua conta institucional para continuar.</p>
       </div>
 
-      <!-- Seleção de perfil: define para qual área o usuário será enviado -->
-      <div class="perfil-selector">
-        <button
-          type="button"
-          [class.active]="perfilSelecionado === 'aluno'"
-          (click)="selecionarPerfil('aluno')"
-        >
-          <i class="bi bi-person"></i>
-          Aluno
-        </button>
+      <!--
+        Quando esse formulário for enviado, ele chama a função entrar()
+        que está no arquivo login.ts.
+      -->
+      <form (ngSubmit)="entrar()">
 
-        <button
-          type="button"
-          [class.active]="perfilSelecionado === 'professor'"
-          (click)="selecionarPerfil('professor')"
-        >
-          <i class="bi bi-person-workspace"></i>
-          Professor
-        </button>
-
-        <button
-          type="button"
-          [class.active]="perfilSelecionado === 'coordenador'"
-          (click)="selecionarPerfil('coordenador')"
-        >
-          <i class="bi bi-shield-check"></i>
-          Coordenador
-        </button>
-      </div>
-
-      <!-- Formulário de login -->
-      <form>
+        <!-- Campo de e-mail -->
         <div class="mb-3">
           <label class="form-label">E-mail acadêmico</label>
+
+          <!--
+            O [(ngModel)] liga esse input com a variável email do login.ts.
+
+            Ou seja:
+            tudo que o usuário digitar aqui vai para a variável email.
+          -->
           <input
             type="email"
             class="form-control"
             placeholder="seu.email@edu.pe.senac.br"
+            name="email"
+            [(ngModel)]="email"
           />
         </div>
 
-        <div class="mb-2">
+        <!-- Campo de senha -->
+        <div class="mb-3">
           <label class="form-label">Senha</label>
+
+          <!--
+            O [(ngModel)] liga esse input com a variável senha do login.ts.
+          -->
           <input
             type="password"
             class="form-control"
             placeholder="Digite sua senha"
+            name="senha"
+            [(ngModel)]="senha"
           />
         </div>
 
-        <div class="forgot-password">
-          <a href="#">Esqueci minha senha</a>
-        </div>
+        <!--
+          Essa mensagem só aparece se existir erro.
+
+          Exemplo:
+          - e-mail vazio
+          - senha vazia
+          - login inválido
+        -->
+        @if (mensagemErro) {
+          <div class="alert alert-danger py-2">
+            {{ mensagemErro }}
+          </div>
+        }
 
         <!--
-          Botão de entrada.
-          Por enquanto, ele só redireciona conforme o perfil escolhido.
+          Botão de login.
+
+          Ele fica desativado enquanto o sistema está tentando entrar,
+          para evitar que o usuário clique várias vezes.
         -->
-        <button type="button" class="btn-login" (click)="entrar()">
-          Entrar
-          <i class="bi bi-arrow-right"></i>
+        <button
+          type="submit"
+          class="btn-login"
+          [disabled]="carregando"
+        >
+          @if (carregando) {
+            Entrando...
+          } @else {
+            Entrar
+            <i class="bi bi-arrow-right"></i>
+          }
         </button>
       </form>
 
-      <!-- Aviso importante: o cadastro não será aberto ao público -->
+      <!--
+        Aviso simples para explicar que o cadastro de perfis internos
+        não deve ser público.
+      -->
       <p class="login-note">
-        O cadastro de usuários é realizado pela coordenação.
+        O cadastro de professores, coordenadores e administradores é realizado pelo administrador do sistema.
       </p>
     </div>
 
-    <!-- Área direita: banner visual da tela de login -->
+    <!--
+      Lado direito da tela:
+      parte visual/institucional, sem lógica de sistema.
+    -->
     <div class="login-banner">
       <div>
         <span class="tag">Observatório Acadêmico</span>

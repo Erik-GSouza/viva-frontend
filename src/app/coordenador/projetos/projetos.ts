@@ -32,12 +32,12 @@ interface Projeto {
   o coordenador usa essa tela para acompanhar todos os projetos da plataforma
 */
 @Component({
-  selector: 'app-projetos',
+  selector: 'app-coordenador-projetos',
   imports: [Sidebar, Topbar],
   templateUrl: './projetos.html',
   styleUrl: './projetos.css'
 })
-export class Projetos {
+export class CoordenadorProjetos {
   /*
     lista provisória de projetos.
     depois esses dados virão do banco de dados pelo back-end

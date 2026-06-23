@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
 
 import { Login } from './auth/login/login';
-import { Vitrine } from './aluno/vitrine/vitrine';
+import { AlunoProjetos } from './aluno/projetos/projetos';
 import { FilaAprovacao } from './professor/fila-aprovacao/fila-aprovacao';
 import { Dashboard } from './coordenador/dashboard/dashboard';
-import { Projetos } from './coordenador/projetos/projetos';
+import { CoordenadorProjetos } from './coordenador/projetos/projetos';
 
 export const routes: Routes = [
   {
@@ -17,8 +17,8 @@ export const routes: Routes = [
     component: Login
   },
   {
-    path: 'aluno/vitrine',
-    component: Vitrine
+    path: 'aluno/projetos',
+    component: AlunoProjetos
   },
   {
     path: 'professor/fila-aprovacao',
@@ -30,7 +30,7 @@ export const routes: Routes = [
   },
   {
     path: 'coordenador/projetos',
-    component: Projetos
+    component: CoordenadorProjetos
   },
   {
     path: '**',

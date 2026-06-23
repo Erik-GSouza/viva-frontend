@@ -13,7 +13,7 @@
 
   <!-- Menu principal da sidebar -->
   <nav class="sidebar-menu">
-    @for (item of menuItens; track item.label) {
+    @for (item of menuItens; track $index) {
       <a
         [routerLink]="item.route"
         routerLinkActive="active"

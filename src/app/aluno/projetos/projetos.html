@@ -1,0 +1,160 @@
+<section class="app-page">
+  <app-sidebar perfil="aluno"></app-sidebar>
+
+  <main class="page-content">
+    <app-topbar
+      titulo="Meus Projetos"
+      [nomeUsuario]="usuarioLogado?.nome || 'Aluno'"
+      perfil="Aluno"
+      perfilTipo="aluno"
+    ></app-topbar>
+
+    <div class="content-area">
+
+      <div class="page-header">
+        <div>
+          <h2>Meus Projetos</h2>
+          <p>Acompanhe seus Projetos Integradores submetidos na plataforma.</p>
+        </div>
+
+        <button class="btn-primary" type="button" disabled>
+          <i class="bi bi-plus-lg"></i>
+          Submeter Novo Projeto
+        </button>
+      </div>
+
+      @if (mensagemErro) {
+        <div class="alert alert-danger">
+          {{ mensagemErro }}
+        </div>
+      }
+
+      @if (carregando) {
+        <div class="loading-card">
+          <i class="bi bi-hourglass-split"></i>
+          <p>Carregando seus projetos...</p>
+        </div>
+      } @else {
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon primary">
+              <i class="bi bi-folder2-open"></i>
+            </div>
+
+            <div>
+              <span>Total</span>
+              <strong>{{ totalProjetos }}</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon success">
+              <i class="bi bi-check-circle"></i>
+            </div>
+
+            <div>
+              <span>Aprovados</span>
+              <strong>{{ totalAprovados }}</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon warning">
+              <i class="bi bi-clock"></i>
+            </div>
+
+            <div>
+              <span>Pendentes</span>
+              <strong>{{ totalPendentes }}</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon info">
+              <i class="bi bi-arrow-repeat"></i>
+            </div>
+
+            <div>
+              <span>Em revisão</span>
+              <strong>{{ totalRevisao }}</strong>
+            </div>
+          </div>
+        </div>
+
+        @if (projetos.length === 0) {
+          <div class="empty-state">
+            <i class="bi bi-folder-x"></i>
+
+            <h3>Nenhum projeto encontrado</h3>
+
+            <p>
+              Quando você submeter um Projeto Integrador, ele aparecerá aqui.
+            </p>
+          </div>
+        } @else {
+          <div class="projects-grid">
+            @for (projeto of projetos; track projeto.id_projeto) {
+              <article class="project-card">
+                <div class="project-cover">
+                  <i class="bi bi-lightbulb"></i>
+                </div>
+
+                <div class="project-body">
+                  <span class="status" [class]="classeStatus(projeto.status)">
+                    {{ formatarStatus(projeto.status) }}
+                  </span>
+
+                  <h3>{{ projeto.titulo }}</h3>
+
+                  <p>
+                    {{ projeto.descricao }}
+                  </p>
+
+                  <div class="project-info">
+                    <div>
+                      <span>Submissão</span>
+                      <strong>{{ formatarData(projeto.data_submissao) }}</strong>
+                    </div>
+
+                    <div>
+                      <span>Publicado</span>
+                      <strong>
+                        @if (projeto.publicado === 1) {
+                          Sim
+                        } @else {
+                          Não
+                        }
+                      </strong>
+                    </div>
+                  </div>
+
+                  <div class="project-actions">
+                    <button type="button" class="btn-outline" disabled>
+                      <i class="bi bi-eye"></i>
+                      Ver detalhes
+                    </button>
+
+                    @if (projeto.status === 'aprovado') {
+                      <button type="button" class="btn-primary small" disabled>
+                        <i class="bi bi-person-badge"></i>
+                        Portfólio
+                      </button>
+                    }
+
+                    @if (projeto.status === 'revisao_solicitada') {
+                      <button type="button" class="btn-warning" disabled>
+                        <i class="bi bi-arrow-repeat"></i>
+                        Reenviar
+                      </button>
+                    }
+                  </div>
+                </div>
+              </article>
+            }
+          </div>
+        }
+      }
+    </div>
+  </main>
+</section>
