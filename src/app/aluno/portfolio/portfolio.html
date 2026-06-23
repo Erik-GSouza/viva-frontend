@@ -1,0 +1,163 @@
+<section class="app-page">
+  <app-sidebar perfil="aluno"></app-sidebar>
+
+  <main class="page-content">
+    <app-topbar
+      titulo="Meu Portfólio"
+      [nomeUsuario]="usuarioLogado?.nome || 'Aluno'"
+      perfil="Aluno"
+      perfilTipo="aluno"
+    ></app-topbar>
+
+    <div class="content-area">
+      <div class="page-header">
+        <div>
+          <h2>Meu Portfólio</h2>
+          <p>Veja os projetos aprovados que fazem parte do seu portfólio acadêmico.</p>
+        </div>
+
+        <button class="btn-primary" type="button" disabled>
+          <i class="bi bi-share"></i>
+          Compartilhar portfólio
+        </button>
+      </div>
+
+      @if (mensagemErro) {
+        <div class="alert alert-danger">
+          {{ mensagemErro }}
+        </div>
+      }
+
+      @if (carregando) {
+        <div class="loading-card">
+          <i class="bi bi-hourglass-split"></i>
+          <p>Carregando portfólio...</p>
+        </div>
+      } @else {
+        <section class="portfolio-hero">
+          <div>
+            <span class="portfolio-label">Portfólio Acadêmico</span>
+
+            <h1>
+              {{ portfolio?.titulo || 'Portfólio de ' + (usuarioLogado?.nome || 'Aluno') }}
+            </h1>
+
+            <p>
+              {{ portfolio?.descricao || 'Aqui ficam reunidos os Projetos Integradores vinculados ao seu perfil acadêmico.' }}
+            </p>
+          </div>
+
+          <div class="hero-icon">
+            <i class="bi bi-person-badge"></i>
+          </div>
+        </section>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon primary">
+              <i class="bi bi-folder2-open"></i>
+            </div>
+
+            <div>
+              <span>Projetos</span>
+              <strong>{{ totalProjetos }}</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon success">
+              <i class="bi bi-globe2"></i>
+            </div>
+
+            <div>
+              <span>Publicados</span>
+              <strong>{{ totalPublicados }}</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon warning">
+              <i class="bi bi-star"></i>
+            </div>
+
+            <div>
+              <span>Destaques</span>
+              <strong>{{ totalDestaques }}</strong>
+            </div>
+          </div>
+        </div>
+
+        @if (itensPortfolio.length === 0) {
+          <div class="empty-state">
+            <i class="bi bi-person-badge"></i>
+
+            <h3>Nenhum projeto no portfólio</h3>
+
+            <p>
+              Quando um projeto aprovado for adicionado ao seu portfólio, ele aparecerá aqui.
+            </p>
+          </div>
+        } @else {
+          <div class="portfolio-grid">
+            @for (item of itensPortfolio; track item.relacao.id_portfolio_projeto) {
+              <article class="portfolio-card">
+                <div class="project-cover">
+                  <i class="bi bi-lightbulb"></i>
+                </div>
+
+                <div class="project-body">
+                  <div class="card-top">
+                    <span class="status {{ classeStatus(item.projeto.status) }}">
+                      {{ formatarStatus(item.projeto.status) }}
+                    </span>
+
+                    @if (ehDestaque(item.relacao)) {
+                      <span class="highlight-badge">
+                        <i class="bi bi-star-fill"></i>
+                        Destaque
+                      </span>
+                    }
+                  </div>
+
+                  <h3>{{ item.projeto.titulo }}</h3>
+
+                  <p>
+                    {{ item.projeto.descricao }}
+                  </p>
+
+                  <div class="project-info">
+                    <div>
+                      <span>Adicionado</span>
+                      <strong>{{ formatarData(item.relacao.data_adicao) }}</strong>
+                    </div>
+
+                    <div>
+                      <span>Publicado</span>
+                      <strong>
+                        @if (item.projeto.publicado === 1) {
+                          Sim
+                        } @else {
+                          Não
+                        }
+                      </strong>
+                    </div>
+                  </div>
+
+                  <div class="card-actions">
+                    <a
+                      class="btn-outline"
+                      [routerLink]="['/aluno/projetos', item.projeto.id_projeto]"
+                    >
+                      <i class="bi bi-eye"></i>
+                      Ver detalhes
+                    </a>
+                  </div>
+                </div>
+              </article>
+            }
+          </div>
+        }
+      }
+    </div>
+  </main>
+</section>
