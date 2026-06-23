@@ -6,6 +6,7 @@ import { FilaAprovacao } from './professor/fila-aprovacao/fila-aprovacao';
 import { Dashboard } from './coordenador/dashboard/dashboard';
 import { CoordenadorProjetos } from './coordenador/projetos/projetos';
 import { AlunoProjetoDetalhes } from './aluno/projeto-detalhes/projeto-detalhes';
+import { AlunoNotificacoes } from './aluno/notificacoes/notificacoes';
 
 export const routes: Routes = [
   {
@@ -24,6 +25,10 @@ export const routes: Routes = [
   {
     path: 'aluno/projetos/:id',
     component: AlunoProjetoDetalhes
+  },
+  {
+    path: 'aluno/notificacoes',
+    component: AlunoNotificacoes
   },
   {
     path: 'professor/fila-aprovacao',

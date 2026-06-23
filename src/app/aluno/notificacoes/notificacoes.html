@@ -1,0 +1,144 @@
+<section class="app-page">
+  <app-sidebar perfil="aluno"></app-sidebar>
+
+  <main class="page-content">
+    <app-topbar
+      titulo="Notificações"
+      [nomeUsuario]="usuarioLogado?.nome || 'Aluno'"
+      perfil="Aluno"
+      perfilTipo="aluno"
+    ></app-topbar>
+
+    <div class="content-area">
+      <div class="page-header">
+        <div>
+          <h2>Notificações</h2>
+          <p>Acompanhe avisos sobre seus Projetos Integradores.</p>
+        </div>
+
+        <button class="btn-primary" type="button" disabled>
+          <i class="bi bi-check2-all"></i>
+          Marcar todas como lidas
+        </button>
+      </div>
+
+      @if (mensagemErro) {
+        <div class="alert alert-danger">
+          {{ mensagemErro }}
+        </div>
+      }
+
+      @if (carregando) {
+        <div class="loading-card">
+          <i class="bi bi-hourglass-split"></i>
+          <p>Carregando notificações...</p>
+        </div>
+      } @else {
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon primary">
+              <i class="bi bi-bell"></i>
+            </div>
+
+            <div>
+              <span>Total</span>
+              <strong>{{ totalNotificacoes }}</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon warning">
+              <i class="bi bi-envelope"></i>
+            </div>
+
+            <div>
+              <span>Não lidas</span>
+              <strong>{{ totalNaoLidas }}</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon success">
+              <i class="bi bi-check-circle"></i>
+            </div>
+
+            <div>
+              <span>Lidas</span>
+              <strong>{{ totalLidas }}</strong>
+            </div>
+          </div>
+        </div>
+
+        @if (notificacoes.length === 0) {
+          <div class="empty-state">
+            <i class="bi bi-bell-slash"></i>
+
+            <h3>Nenhuma notificação encontrada</h3>
+
+            <p>
+              Quando houver atualizações sobre seus projetos, elas aparecerão aqui.
+            </p>
+          </div>
+        } @else {
+          <div class="notifications-list">
+            @for (notificacao of notificacoes; track notificacao.id_notificacao) {
+              <article
+                class="notification-card {{ notificacaoLida(notificacao) ? 'read' : 'unread' }}"
+              >
+                <div class="notification-icon {{ classePorTipo(notificacao.tipo) }}">
+                  <i class="bi {{ iconePorTipo(notificacao.tipo) }}"></i>
+                </div>
+
+                <div class="notification-content">
+                  <div class="notification-header">
+                    <div>
+                      <h3>{{ notificacao.titulo }}</h3>
+
+                      <span>
+                        {{ formatarData(notificacao) }}
+                      </span>
+                    </div>
+
+                    @if (!notificacaoLida(notificacao)) {
+                      <span class="badge-unread">
+                        Nova
+                      </span>
+                    }
+                  </div>
+
+                  <p>
+                    {{ notificacao.mensagem }}
+                  </p>
+
+                  <div class="notification-actions">
+                    @if (!notificacaoLida(notificacao)) {
+                      <button
+                        type="button"
+                        class="btn-outline"
+                        [disabled]="marcandoId === notificacao.id_notificacao"
+                        (click)="marcarComoLida(notificacao)"
+                      >
+                        <i class="bi bi-check2"></i>
+
+                        @if (marcandoId === notificacao.id_notificacao) {
+                          Salvando...
+                        } @else {
+                          Marcar como lida
+                        }
+                      </button>
+                    } @else {
+                      <span class="read-label">
+                        <i class="bi bi-check2-circle"></i>
+                        Lida
+                      </span>
+                    }
+                  </div>
+                </div>
+              </article>
+            }
+          </div>
+        }
+      }
+    </div>
+  </main>
+</section>

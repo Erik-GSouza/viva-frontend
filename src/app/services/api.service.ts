@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 /*
   Service base da API
 
-  Ele centraliza a URL do back-end e evita que a gente repita
+  Ele centraliza a URL do back-end e evita que repita
   http://127.0.0.1:8000/api/v1 em varios arquivos
 */
 @Injectable({
