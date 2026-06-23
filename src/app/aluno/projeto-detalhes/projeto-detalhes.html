@@ -1,0 +1,117 @@
+<section class="app-page">
+  <app-sidebar perfil="aluno"></app-sidebar>
+
+  <main class="page-content">
+    <app-topbar
+      titulo="Detalhes do Projeto"
+      [nomeUsuario]="usuarioLogado?.nome || 'Aluno'"
+      perfil="Aluno"
+      perfilTipo="aluno"
+    ></app-topbar>
+
+    <div class="content-area">
+
+      <a routerLink="/aluno/projetos" class="back-link">
+        <i class="bi bi-arrow-left"></i>
+        Voltar para meus projetos
+      </a>
+
+      @if (mensagemErro) {
+        <div class="alert alert-danger mt-3">
+          {{ mensagemErro }}
+        </div>
+      }
+
+      @if (carregando) {
+        <div class="loading-card">
+          <i class="bi bi-hourglass-split"></i>
+          <p>Carregando detalhes do projeto...</p>
+        </div>
+      } @else if (projeto) {
+
+        <section class="project-hero">
+          <div>
+            <span class="status" [class]="classeStatus(projeto.status)">
+              {{ formatarStatus(projeto.status) }}
+            </span>
+
+            <h1>{{ projeto.titulo }}</h1>
+
+            <p>
+              {{ projeto.descricao }}
+            </p>
+          </div>
+
+          <div class="hero-icon">
+            <i class="bi bi-lightbulb"></i>
+          </div>
+        </section>
+
+        <section class="details-grid">
+
+          <article class="details-card">
+            <h2>Informações Gerais</h2>
+
+            <div class="info-list">
+              <div>
+                <span>ID do Projeto</span>
+                <strong>{{ projeto.id_projeto }}</strong>
+              </div>
+
+              <div>
+                <span>Status</span>
+                <strong>{{ formatarStatus(projeto.status) }}</strong>
+              </div>
+
+              <div>
+                <span>Publicado na vitrine</span>
+                <strong>{{ publicadoTexto(projeto.publicado) }}</strong>
+              </div>
+
+              <div>
+                <span>Slug público</span>
+                <strong>{{ projeto.slug_publico || '-' }}</strong>
+              </div>
+
+              <div>
+                <span>Data de submissão</span>
+                <strong>{{ formatarData(projeto.data_submissao) }}</strong>
+              </div>
+
+              <div>
+                <span>Data de aprovação</span>
+                <strong>{{ formatarData(projeto.data_aprovacao) }}</strong>
+              </div>
+            </div>
+          </article>
+
+          <article class="details-card">
+            <h2>Problema Identificado</h2>
+
+            <p>
+              {{ projeto.problema || 'Nenhum problema foi informado.' }}
+            </p>
+          </article>
+
+          <article class="details-card">
+            <h2>Solução Proposta</h2>
+
+            <p>
+              {{ projeto.solucao || 'Nenhuma solução foi informada.' }}
+            </p>
+          </article>
+
+          <article class="details-card">
+            <h2>Arquivos do Projeto</h2>
+
+            <p>
+              No MVP inicial, o sistema registra as informações dos arquivos do projeto
+              O upload físico de PDF será implementado futuramente
+            </p>
+          </article>
+
+        </section>
+      }
+    </div>
+  </main>
+</section>

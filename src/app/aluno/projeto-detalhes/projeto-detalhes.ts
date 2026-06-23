@@ -1,15 +1,15 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { Sidebar } from '../../shared/sidebar/sidebar';
 import { Topbar } from '../../shared/topbar/topbar';
 import { ApiService } from '../../services/api.service';
 import { AuthService, UsuarioLogado } from '../../services/auth.service';
-import { RouterLink } from '@angular/router';
 
 /*
-  representa um projeto vindo do back
+  Representa o projeto retornado pelo back-end.
 
-  segue os campos do FastAPI
+  Aqui usa os mesmos campos que vêm do FastAPI
 */
 interface Projeto {
   id_projeto: number;
@@ -29,119 +29,116 @@ interface Projeto {
 }
 
 @Component({
-  selector: 'app-aluno-projetos',
-  imports: [Sidebar, Topbar, RouterLink],
-  templateUrl: './projetos.html',
-  styleUrl: './projetos.css'
-})
-export class AlunoProjetos implements OnInit {
-  usuarioLogado: UsuarioLogado | null = null;
-  projetos: Projeto[] = [];
+  selector: 'app-aluno-projeto-detalhes',
 
-  mensagemErro = '';
+  /*
+    Importa Sidebar e Topbar para manter o layout interno
+    Importa RouterLink para poder usar links no HTML
+  */
+  imports: [Sidebar, Topbar, RouterLink],
+
+  templateUrl: './projeto-detalhes.html',
+  styleUrl: './projeto-detalhes.css'
+})
+export class AlunoProjetoDetalhes implements OnInit {
+  usuarioLogado: UsuarioLogado | null = null;
+
+  projeto: Projeto | null = null;
+
   carregando = true;
+  mensagemErro = '';
 
   constructor(
+    /*
+      ActivatedRoute serve para pegar o id que vem na URL
+
+      Ex:
+      /aluno/projetos/1
+
+      O id será 1
+    */
+    private route: ActivatedRoute,
+
     private apiService: ApiService,
     private authService: AuthService,
+
+    /*
+      Mantivemos o ChangeDetectorRef pq ele resolveu
+      o problema da tela não atualizar depois da resposta do back
+    */
     private changeDetector: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     /*
-      Primeiro busca o usuario salvo no navegador depois do login
+      Buscamos o usuario logado salvo no localStorage
     */
     this.usuarioLogado = this.authService.buscarUsuario();
 
     if (!this.usuarioLogado) {
       this.carregando = false;
       this.mensagemErro = 'Nenhum usuário logado foi encontrado.';
-
-      /*
-        Força a tela a atualizar depois da mudança
-      */
       this.changeDetector.detectChanges();
       return;
     }
 
-    this.carregarProjetos();
+    /*
+      Pegamos o id do projeto pela URL
+    */
+    const idProjeto = Number(this.route.snapshot.paramMap.get('id'));
+
+    if (!idProjeto) {
+      this.carregando = false;
+      this.mensagemErro = 'Projeto inválido.';
+      this.changeDetector.detectChanges();
+      return;
+    }
+
+    this.carregarProjeto(idProjeto);
   }
 
-  carregarProjetos(): void {
+  /*
+    Busca o projeto especifico no back
+
+    Endpoint:
+    GET /api/v1/projetos/{id_projeto}
+  */
+  carregarProjeto(idProjeto: number): void {
     this.carregando = true;
     this.mensagemErro = '';
 
-    this.apiService.get<Projeto[]>('/projetos').subscribe({
+    this.apiService.get<Projeto>(`/projetos/${idProjeto}`).subscribe({
       next: (resposta) => {
-        if (!Array.isArray(resposta)) {
-          this.projetos = [];
-          this.carregando = false;
-          this.mensagemErro = 'A resposta de projetos veio em um formato inesperado.';
-
-          this.changeDetector.detectChanges();
-          return;
-        }
-
-        const idUsuarioLogado = this.usuarioLogado?.id_usuario;
-
-        if (!idUsuarioLogado) {
-          this.projetos = [];
-          this.carregando = false;
-          this.mensagemErro = 'Não foi possível identificar o usuário logado.';
-
-          this.changeDetector.detectChanges();
-          return;
-        }
-
         /*
-          Filtra apenas os projetos enviados pelo aluno logado
+          Segurançazinha:
+          o aluno só pode visualizar projeto que ele mesmo submeteu
         */
-        this.projetos = resposta.filter(
-          (projeto) => projeto.id_usuario_submissor === idUsuarioLogado
-        );
+        if (resposta.id_usuario_submissor !== this.usuarioLogado?.id_usuario) {
+          this.projeto = null;
+          this.carregando = false;
+          this.mensagemErro = 'Você não tem acesso a este projeto.';
+          this.changeDetector.detectChanges();
+          return;
+        }
 
+        this.projeto = resposta;
         this.carregando = false;
-
-        /*
-          força o Angular a refletir na tela que carregando virou false
-          e que a lista de projetos foi preenchida
-        */
         this.changeDetector.detectChanges();
       },
 
       error: (erro) => {
+        this.projeto = null;
         this.carregando = false;
-        this.projetos = [];
 
-        if (erro.status === 0) {
-          this.mensagemErro = 'Não foi possível conectar ao back-end. Verifique se o FastAPI está rodando.';
+        if (erro.status === 404) {
+          this.mensagemErro = 'Projeto não encontrado.';
         } else {
-          this.mensagemErro = `Erro ao carregar projetos. Código: ${erro.status}`;
+          this.mensagemErro = `Erro ao carregar projeto. Código: ${erro.status}`;
         }
 
         this.changeDetector.detectChanges();
       }
     });
-  }
-
-  get totalProjetos(): number {
-    return this.projetos.length;
-  }
-
-  get totalAprovados(): number {
-    return this.projetos.filter((projeto) => projeto.status === 'aprovado').length;
-  }
-
-  get totalPendentes(): number {
-    return this.projetos.filter((projeto) => projeto.status === 'pendente').length;
-  }
-
-  get totalRevisao(): number {
-    return this.projetos.filter((projeto) => projeto.status === 'revisao_solicitada').length;
-  }
-
-  get totalRejeitados(): number {
-    return this.projetos.filter((projeto) => projeto.status === 'rejeitado').length;
   }
 
   formatarStatus(status: string): string {
@@ -190,5 +187,9 @@ export class AlunoProjetos implements OnInit {
     }
 
     return new Date(data).toLocaleDateString('pt-BR');
+  }
+
+  publicadoTexto(publicado: number): string {
+    return publicado === 1 ? 'Sim' : 'Não';
   }
 }

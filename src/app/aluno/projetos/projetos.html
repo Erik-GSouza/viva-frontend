@@ -129,11 +129,14 @@
                     </div>
                   </div>
 
-                  <div class="project-actions">
-                    <button type="button" class="btn-outline" disabled>
+                  <div class="card-actions">
+                    <a
+                      class="btn-outline"
+                      [routerLink]="['/aluno/projetos', projeto.id_projeto]"
+                    >
                       <i class="bi bi-eye"></i>
                       Ver detalhes
-                    </button>
+                    </a>
 
                     @if (projeto.status === 'aprovado') {
                       <button type="button" class="btn-primary small" disabled>
