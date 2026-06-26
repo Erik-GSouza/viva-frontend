@@ -1,175 +1,268 @@
 <section class="coordenador-page">
-  <!-- Menu lateral do coordenador -->
   <app-sidebar perfil="coordenador"></app-sidebar>
 
   <main class="page-content">
-    <!-- Topbar adaptada para o coordenador -->
     <app-topbar
-      titulo="Gestão de Projetos"
-      nomeUsuario="Mariana Silva"
-      perfil="Coordenadora"
+      titulo="Projetos"
+      [nomeUsuario]="usuarioLogado?.nome || 'Coordenador'"
+      perfil="Coordenador"
       perfilTipo="coordenador"
     ></app-topbar>
 
     <div class="content-area">
-      <!-- Cabeçalho da página -->
       <div class="page-header">
         <div>
           <h2>Projetos cadastrados</h2>
-          <p>Acompanhe todos os projetos submetidos na plataforma.</p>
+          <p>Acompanhe os projetos e publique na vitrine pública quando estiverem aprovados.</p>
         </div>
 
-        <button type="button" class="btn-export">
-          <i class="bi bi-file-earmark-arrow-down"></i>
-          Exportar lista
+        <button type="button" class="btn-refresh" (click)="carregarDados()">
+          <i class="bi bi-arrow-clockwise"></i>
+          Atualizar
         </button>
       </div>
 
-      <!-- Cards de resumo da gestão de projetos -->
-      <div class="stats-grid">
-        <article class="stat-card">
-          <div class="stat-icon primary">
-            <i class="bi bi-folder2-open"></i>
-          </div>
+      @if (mensagemErro) {
+        <div class="alert alert-danger">
+          {{ mensagemErro }}
+        </div>
+      }
 
-          <div>
-            <span>Total de projetos</span>
-            <strong>234</strong>
-          </div>
-        </article>
+      @if (mensagemSucesso) {
+        <div class="alert alert-success">
+          {{ mensagemSucesso }}
+        </div>
+      }
 
-        <article class="stat-card">
-          <div class="stat-icon warning">
-            <i class="bi bi-hourglass-split"></i>
-          </div>
+      @if (carregando) {
+        <div class="loading-card">
+          <i class="bi bi-hourglass-split"></i>
+          <p>Carregando projetos...</p>
+        </div>
+      } @else {
+        <div class="stats-grid">
+          <article class="stat-card">
+            <div class="stat-icon primary">
+              <i class="bi bi-folder2-open"></i>
+            </div>
 
-          <div>
-            <span>Aguardando avaliação</span>
-            <strong>18</strong>
-          </div>
-        </article>
+            <div>
+              <span>Total de projetos</span>
+              <strong>{{ totalProjetos }}</strong>
+            </div>
+          </article>
 
-        <article class="stat-card">
-          <div class="stat-icon success">
-            <i class="bi bi-check-circle"></i>
-          </div>
+          <article class="stat-card">
+            <div class="stat-icon success">
+              <i class="bi bi-check-circle"></i>
+            </div>
 
-          <div>
-            <span>Aprovados</span>
-            <strong>156</strong>
-          </div>
-        </article>
+            <div>
+              <span>Aprovados</span>
+              <strong>{{ totalAprovados }}</strong>
+            </div>
+          </article>
 
-        <article class="stat-card">
-          <div class="stat-icon danger">
-            <i class="bi bi-x-circle"></i>
-          </div>
+          <article class="stat-card">
+            <div class="stat-icon warning">
+              <i class="bi bi-hourglass-split"></i>
+            </div>
 
-          <div>
-            <span>Rejeitados</span>
-            <strong>7</strong>
-          </div>
-        </article>
-      </div>
+            <div>
+              <span>Pendentes</span>
+              <strong>{{ totalPendentes }}</strong>
+            </div>
+          </article>
 
-      <!-- area de filtros -->
-      <section class="filters-card">
-        <div class="search-box-large">
-          <i class="bi bi-search"></i>
-          <input
-            type="text"
-            placeholder="Buscar por título, aluno, orientador ou tecnologia..."
-          />
+          <article class="stat-card">
+            <div class="stat-icon info">
+              <i class="bi bi-globe2"></i>
+            </div>
+
+            <div>
+              <span>Publicados</span>
+              <strong>{{ totalPublicados }}</strong>
+            </div>
+          </article>
         </div>
 
-        <div class="filters-row">
-          <button type="button" class="filter-button active">Todos</button>
-          <button type="button" class="filter-button">Pendentes</button>
-          <button type="button" class="filter-button">Em análise</button>
-          <button type="button" class="filter-button">Revisão solicitada</button>
-          <button type="button" class="filter-button">Reenviados</button>
-          <button type="button" class="filter-button">Aprovados</button>
-          <button type="button" class="filter-button">Rejeitados</button>
-        </div>
+        <section class="filters-card">
+          <div class="search-box-large">
+            <i class="bi bi-search"></i>
 
-        <div class="select-row">
-          <select class="form-select">
-            <option>Curso: Todos</option>
-            <option>ADS</option>
-            <option>Design</option>
-            <option>Gestão</option>
-          </select>
-
-          <select class="form-select">
-            <option>Semestre: Todos</option>
-            <option>2025.1</option>
-            <option>2025.2</option>
-            <option>2026.1</option>
-          </select>
-
-          <select class="form-select">
-            <option>Orientador: Todos</option>
-            <option>Prof. Carlos Mendes</option>
-            <option>Prof. Rafael Oliveira</option>
-            <option>Prof. Carla Souza</option>
-          </select>
-        </div>
-      </section>
-
-      <!-- tabela principal de projetos -->
-      <section class="projects-card">
-        <div class="card-header">
-          <div>
-            <h3>Lista de projetos</h3>
-            <span>Projetos de todos os status aparecem nesta área administrativa.</span>
+            <input
+              type="text"
+              placeholder="Buscar por título, aluno, orientador ou curso..."
+              [(ngModel)]="termoBusca"
+            />
           </div>
-        </div>
 
-        <div class="table-responsive">
-          <table class="projects-table">
-            <thead>
-              <tr>
-                <th>Projeto</th>
-                <th>Responsável</th>
-                <th>Curso</th>
-                <th>Semestre</th>
-                <th>Orientador</th>
-                <th>Data de envio</th>
-                <th>Status</th>
-                <th>Ações</th>
-              </tr>
-            </thead>
+          <div class="filters-row">
+            <button
+              type="button"
+              class="filter-button"
+              [class.active]="filtroAtual === 'todos'"
+              (click)="mudarFiltro('todos')"
+            >
+              Todos
+            </button>
 
-            <tbody>
-              @for (projeto of projetos; track projeto.id) {
-                <tr>
-                  <td>
-                    <strong>{{ projeto.titulo }}</strong>
-                  </td>
+            <button
+              type="button"
+              class="filter-button"
+              [class.active]="filtroAtual === 'aprovado'"
+              (click)="mudarFiltro('aprovado')"
+            >
+              Aprovados
+            </button>
 
-                  <td>{{ projeto.responsavel }}</td>
-                  <td>{{ projeto.curso }}</td>
-                  <td>{{ projeto.semestre }}</td>
-                  <td>{{ projeto.orientador }}</td>
-                  <td>{{ projeto.dataEnvio }}</td>
+            <button
+              type="button"
+              class="filter-button"
+              [class.active]="filtroAtual === 'pendente'"
+              (click)="mudarFiltro('pendente')"
+            >
+              Pendentes
+            </button>
 
-                  <td>
-                    <span class="status-badge {{ projeto.statusClasse }}">
-                      {{ projeto.status }}
-                    </span>
-                  </td>
+            <button
+              type="button"
+              class="filter-button"
+              [class.active]="filtroAtual === 'revisao_solicitada'"
+              (click)="mudarFiltro('revisao_solicitada')"
+            >
+              Revisão solicitada
+            </button>
 
-                  <td>
-                    <button type="button" class="btn-action">
-                      Ver projeto
-                    </button>
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      </section>
+            <button
+              type="button"
+              class="filter-button"
+              [class.active]="filtroAtual === 'rejeitado'"
+              (click)="mudarFiltro('rejeitado')"
+            >
+              Rejeitados
+            </button>
+
+            <button
+              type="button"
+              class="filter-button"
+              [class.active]="filtroAtual === 'publicado'"
+              (click)="mudarFiltro('publicado')"
+            >
+              Publicados
+            </button>
+
+            <button
+              type="button"
+              class="filter-button"
+              [class.active]="filtroAtual === 'nao_publicado'"
+              (click)="mudarFiltro('nao_publicado')"
+            >
+              Não publicados
+            </button>
+          </div>
+        </section>
+
+        <section class="projects-card">
+          <div class="card-header">
+            <div>
+              <h3>Lista de projetos</h3>
+              <span>Projetos de todos os status aparecem nesta área administrativa.</span>
+            </div>
+          </div>
+
+          @if (projetosFiltrados.length === 0) {
+            <div class="empty-state">
+              <i class="bi bi-folder-x"></i>
+
+              <h3>Nenhum projeto encontrado</h3>
+
+              <p>
+                Tente mudar o filtro ou limpar o campo de busca.
+              </p>
+            </div>
+          } @else {
+            <div class="table-responsive">
+              <table class="projects-table">
+                <thead>
+                  <tr>
+                    <th>Projeto</th>
+                    <th>Aluno</th>
+                    <th>Curso</th>
+                    <th>Semestre</th>
+                    <th>Orientador</th>
+                    <th>Envio</th>
+                    <th>Status</th>
+                    <th>Publicação</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  @for (projeto of projetosFiltrados; track projeto.id_projeto) {
+                    <tr>
+                      <td>
+                        <strong>{{ projeto.titulo }}</strong>
+                        <span>{{ projeto.descricao }}</span>
+                      </td>
+
+                      <td>{{ nomeUsuario(projeto.id_usuario_submissor) }}</td>
+
+                      <td>{{ nomeCursoPorTurma(projeto.id_turma) }}</td>
+
+                      <td>{{ semestrePorTurma(projeto.id_turma) }}</td>
+
+                      <td>{{ nomeUsuario(projeto.id_professor_orientador) }}</td>
+
+                      <td>{{ formatarData(projeto.data_submissao) }}</td>
+
+                      <td>
+                        <span class="status-badge {{ classeStatus(projeto.status) }}">
+                          {{ formatarStatus(projeto.status) }}
+                        </span>
+                      </td>
+
+                      <td>
+                        <span class="publish-badge {{ classePublicado(projeto.publicado) }}">
+                          {{ publicadoTexto(projeto.publicado) }}
+                        </span>
+                      </td>
+
+                      <td>
+                        @if (podePublicar(projeto)) {
+                          <button
+                            type="button"
+                            class="btn-action primary-action"
+                            [disabled]="publicandoId === projeto.id_projeto"
+                            (click)="publicarProjeto(projeto)"
+                          >
+                            <i class="bi bi-globe2"></i>
+
+                            @if (publicandoId === projeto.id_projeto) {
+                              Publicando...
+                            } @else {
+                              Publicar
+                            }
+                          </button>
+                        } @else if (projeto.publicado === 1) {
+                          <span class="action-label">
+                            <i class="bi bi-check2-circle"></i>
+                            Já publicado
+                          </span>
+                        } @else {
+                          <span class="action-label muted">
+                            Aguardando aprovação
+                          </span>
+                        }
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </section>
+      }
     </div>
   </main>
 </section>

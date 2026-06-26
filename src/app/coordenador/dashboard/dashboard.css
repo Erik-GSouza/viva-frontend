@@ -347,7 +347,7 @@
 
 /*
   Ajuste visual do dashboard do coordenador
-  Com align-items: start, cada card fica com a altura necessária para o próprio conteúdo.
+  Com align-items: start, cada card fica com a altura necessária para o próprio conteúdo
 */
 .dashboard-grid {
   align-items: start;

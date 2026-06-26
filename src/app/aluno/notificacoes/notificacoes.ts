@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 import { Sidebar } from '../../shared/sidebar/sidebar';
 import { Topbar } from '../../shared/topbar/topbar';
@@ -21,11 +22,12 @@ interface Notificacao {
   data_criacao?: string | null;
   data_envio?: string | null;
   data_leitura?: string | null;
+  link_destino?: string | null;
 }
 
 @Component({
   selector: 'app-aluno-notificacoes',
-  imports: [Sidebar, Topbar],
+  imports: [Sidebar, Topbar, RouterLink],
   templateUrl: './notificacoes.html',
   styleUrl: './notificacoes.css'
 })

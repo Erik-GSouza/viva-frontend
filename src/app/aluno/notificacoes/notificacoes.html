@@ -107,6 +107,16 @@
                   </p>
 
                   <div class="notification-actions">
+                    @if (notificacao.link_destino) {
+                      <a
+                        class="btn-outline"
+                        [routerLink]="notificacao.link_destino"
+                      >
+                        <i class="bi bi-box-arrow-up-right"></i>
+                        Ver destino
+                      </a>
+                    }
+
                     @if (!notificacaoLida(notificacao)) {
                       <button
                         type="button"

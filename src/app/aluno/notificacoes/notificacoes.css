@@ -284,6 +284,13 @@
   margin: 0;
 }
 
+a.btn-outline,
+a.btn-outline:visited,
+a.btn-outline:hover,
+a.btn-outline:active {
+  text-decoration: none;
+}
+
 @media (max-width: 900px) {
   .stats-grid {
     grid-template-columns: 1fr;
