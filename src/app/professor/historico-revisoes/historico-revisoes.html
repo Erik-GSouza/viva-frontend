@@ -1,0 +1,187 @@
+<section class="app-page">
+  <app-sidebar perfil="professor"></app-sidebar>
+
+  <main class="page-content">
+    <app-topbar
+      titulo="Histórico de Revisões"
+      [nomeUsuario]="usuarioLogado?.nome || 'Professor'"
+      perfil="Professor"
+      perfilTipo="professor"
+    ></app-topbar>
+
+    <div class="content-area">
+      <div class="page-header">
+        <div>
+          <h2>Histórico de Revisões</h2>
+          <p>Consulte as avaliações que você já registrou nos projetos orientados.</p>
+        </div>
+      </div>
+
+      @if (mensagemErro) {
+        <div class="alert alert-danger">
+          {{ mensagemErro }}
+        </div>
+      }
+
+      @if (carregando) {
+        <div class="loading-card">
+          <i class="bi bi-hourglass-split"></i>
+          <p>Carregando histórico de revisões...</p>
+        </div>
+      } @else {
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon primary">
+              <i class="bi bi-clock-history"></i>
+            </div>
+
+            <div>
+              <span>Total de avaliações</span>
+              <strong>{{ totalAvaliacoes }}</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon success">
+              <i class="bi bi-check-circle"></i>
+            </div>
+
+            <div>
+              <span>Aprovações</span>
+              <strong>{{ totalAprovadas }}</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon info">
+              <i class="bi bi-arrow-repeat"></i>
+            </div>
+
+            <div>
+              <span>Revisões solicitadas</span>
+              <strong>{{ totalRevisoes }}</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon danger">
+              <i class="bi bi-x-circle"></i>
+            </div>
+
+            <div>
+              <span>Rejeições</span>
+              <strong>{{ totalRejeitadas }}</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <button
+            type="button"
+            [class.active]="filtroAtual === 'todos'"
+            (click)="mudarFiltro('todos')"
+          >
+            Todas
+          </button>
+
+          <button
+            type="button"
+            [class.active]="filtroAtual === 'aprovado'"
+            (click)="mudarFiltro('aprovado')"
+          >
+            Aprovadas
+          </button>
+
+          <button
+            type="button"
+            [class.active]="filtroAtual === 'revisao_solicitada'"
+            (click)="mudarFiltro('revisao_solicitada')"
+          >
+            Revisões
+          </button>
+
+          <button
+            type="button"
+            [class.active]="filtroAtual === 'rejeitado'"
+            (click)="mudarFiltro('rejeitado')"
+          >
+            Rejeitadas
+          </button>
+        </div>
+
+        @if (historicoFiltrado.length === 0) {
+          <div class="empty-state">
+            <i class="bi bi-journal-x"></i>
+
+            <h3>Nenhuma revisão encontrada</h3>
+
+            <p>
+              Quando você registrar avaliações nos projetos orientados, elas aparecerão aqui.
+            </p>
+          </div>
+        } @else {
+          <div class="history-list">
+            @for (item of historicoFiltrado; track item.id_registro) {
+              <article class="history-card">
+                <div class="history-main">
+                  <div class="history-top">
+                    <span class="status {{ classeStatus(item.avaliacao.status_resultante) }}">
+                      {{ formatarStatus(item.avaliacao.status_resultante) }}
+                    </span>
+
+                    <span class="date">
+                      {{ formatarData(item.avaliacao.data_avaliacao) }}
+                    </span>
+                  </div>
+
+                  <h3>{{ item.projeto.titulo }}</h3>
+
+                  <p class="description">
+                    {{ item.projeto.descricao }}
+                  </p>
+
+                  <div class="info-grid">
+                    <div>
+                      <span>Aluno</span>
+                      <strong>{{ nomeAluno(item.projeto.id_usuario_submissor) }}</strong>
+                    </div>
+
+                    <div>
+                      <span>Versão avaliada</span>
+                      <strong>{{ textoVersao(item) }}</strong>
+                    </div>
+
+                    <div>
+                      <span>Nota</span>
+                      <strong>{{ formatarNota(item.avaliacao.nota_final) }}</strong>
+                    </div>
+
+                    <div>
+                      <span>Status atual do projeto</span>
+                      <strong>{{ formatarStatus(item.projeto.status) }}</strong>
+                    </div>
+                  </div>
+
+                  <div class="feedback-box">
+                    <span>Parecer registrado</span>
+                    <p>{{ item.avaliacao.parecer }}</p>
+                  </div>
+                </div>
+
+                <div class="history-actions">
+                  <a
+                    class="btn-outline"
+                    [routerLink]="['/professor/projetos', item.projeto.id_projeto]"
+                  >
+                    <i class="bi bi-eye"></i>
+                    Ver projeto
+                  </a>
+                </div>
+              </article>
+            }
+          </div>
+        }
+      }
+    </div>
+  </main>
+</section>

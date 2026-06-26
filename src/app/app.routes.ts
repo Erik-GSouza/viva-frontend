@@ -5,6 +5,7 @@ import { AlunoProjetos } from './aluno/projetos/projetos';
 import { FilaAprovacao } from './professor/fila-aprovacao/fila-aprovacao';
 import { ProfessorProjetoDetalhes } from './professor/projeto-detalhes/projeto-detalhes';
 import { ProfessorNotificacoes } from './professor/notificacoes/notificacoes';
+import { ProfessorHistoricoRevisoes } from './professor/historico-revisoes/historico-revisoes';
 import { Dashboard } from './coordenador/dashboard/dashboard';
 import { CoordenadorProjetos } from './coordenador/projetos/projetos';
 import { AlunoProjetoDetalhes } from './aluno/projeto-detalhes/projeto-detalhes';
@@ -53,6 +54,10 @@ export const routes: Routes = [
   {
     path: 'professor/notificacoes',
     component: ProfessorNotificacoes
+  },
+  {
+    path: 'professor/historico-revisoes',
+    component: ProfessorHistoricoRevisoes
   },
   {
     path: 'coordenador/dashboard',
