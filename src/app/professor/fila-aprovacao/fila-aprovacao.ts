@@ -232,7 +232,7 @@ export class FilaAprovacao implements OnInit {
   }
 
   podeAvaliar(projeto: Projeto): boolean {
-    return projeto.status === 'pendente' || projeto.status === 'revisao_solicitada';
+  return projeto.status === 'pendente';
   }
 
   formatarStatus(status: string): string {

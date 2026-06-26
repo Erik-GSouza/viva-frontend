@@ -1,0 +1,328 @@
+<section class="app-page">
+  <app-sidebar perfil="professor"></app-sidebar>
+
+  <main class="page-content">
+    <app-topbar
+      titulo="Detalhes do Projeto"
+      [nomeUsuario]="usuarioLogado?.nome || 'Professor'"
+      perfil="Professor"
+      perfilTipo="professor"
+    ></app-topbar>
+
+    <div class="content-area">
+      <a routerLink="/professor/fila-aprovacao" class="back-link">
+        <i class="bi bi-arrow-left"></i>
+        Voltar para fila de aprovação
+      </a>
+
+      @if (mensagemErro) {
+        <div class="alert alert-danger">
+          {{ mensagemErro }}
+        </div>
+      }
+
+      @if (mensagemSucesso) {
+        <div class="alert alert-success">
+          {{ mensagemSucesso }}
+        </div>
+      }
+
+      @if (carregando) {
+        <div class="loading-card">
+          <i class="bi bi-hourglass-split"></i>
+          <p>Carregando detalhes do projeto...</p>
+        </div>
+      } @else if (projeto) {
+        <section class="project-hero">
+          <div>
+            <span class="status {{ classeStatus(projeto.status) }}">
+              {{ formatarStatus(projeto.status) }}
+            </span>
+
+            <h1>{{ projeto.titulo }}</h1>
+
+            <p>
+              {{ projeto.descricao }}
+            </p>
+          </div>
+
+          <div class="hero-icon">
+            <i class="bi bi-clipboard-check"></i>
+          </div>
+        </section>
+
+        <section class="details-grid">
+          <article class="details-card">
+            <h2>Informações Gerais</h2>
+
+            <div class="info-list">
+              <div>
+                <span>ID do Projeto</span>
+                <strong>{{ projeto.id_projeto }}</strong>
+              </div>
+
+              <div>
+                <span>Aluno Submissor</span>
+                <strong>{{ nomeUsuarioPorId(projeto.id_usuario_submissor) }}</strong>
+              </div>
+
+              <div>
+                <span>Status</span>
+                <strong>{{ formatarStatus(projeto.status) }}</strong>
+              </div>
+
+              <div>
+                <span>Publicado na vitrine</span>
+                <strong>{{ publicadoTexto(projeto.publicado) }}</strong>
+              </div>
+
+              <div>
+                <span>Data de submissão</span>
+                <strong>{{ formatarData(projeto.data_submissao) }}</strong>
+              </div>
+
+              <div>
+                <span>Data de aprovação</span>
+                <strong>{{ formatarData(projeto.data_aprovacao) }}</strong>
+              </div>
+            </div>
+          </article>
+
+          <article class="details-card">
+            <h2>Problema Identificado</h2>
+            <p>{{ projeto.problema || 'Nenhum problema foi informado.' }}</p>
+          </article>
+
+          <article class="details-card">
+            <h2>Solução Proposta</h2>
+            <p>{{ projeto.solucao || 'Nenhuma solução foi informada.' }}</p>
+          </article>
+
+          <article class="details-card">
+            <h2>Integrantes</h2>
+
+            @if (integrantes.length === 0) {
+              <p>Nenhum integrante vinculado.</p>
+            } @else {
+              <div class="simple-list">
+                @for (integrante of integrantes; track integrante.id_integrante_projeto) {
+                  <div class="list-item">
+                    <strong>{{ nomeUsuarioPorId(integrante.id_usuario) }}</strong>
+                    <span>{{ integrante.funcao }}</span>
+                  </div>
+                }
+              </div>
+            }
+          </article>
+
+          <article class="details-card">
+            <h2>Tags e Tecnologias</h2>
+
+            @if (tags.length === 0) {
+              <p>Nenhuma tag vinculada.</p>
+            } @else {
+              <div class="chips">
+                @for (tag of tags; track tag.id_projeto_tag) {
+                  <span class="chip">
+                    {{ tag.nome }}
+                    <small>{{ tag.categoria }}</small>
+                  </span>
+                }
+              </div>
+            }
+          </article>
+
+          <article class="details-card">
+            <h2>Competências</h2>
+
+            @if (competencias.length === 0) {
+              <p>Nenhuma competência vinculada.</p>
+            } @else {
+              <div class="simple-list">
+                @for (competencia of competencias; track competencia.id_projeto_competencia) {
+                  <div class="list-item">
+                    <strong>{{ competencia.nome }}</strong>
+                    <span>{{ competencia.categoria }} • Nível: {{ competencia.nivel }}</span>
+                  </div>
+                }
+              </div>
+            }
+          </article>
+
+          <article class="details-card full-card">
+            <h2>Versões do Projeto</h2>
+
+            @if (versoes.length === 0) {
+              <p>Nenhuma versão registrada.</p>
+            } @else {
+              <div class="table-like">
+                <div class="table-row table-head">
+                  <span>Versão</span>
+                  <span>Status</span>
+                  <span>Envio</span>
+                  <span>Descrição</span>
+                </div>
+
+                @for (versao of versoes; track versao.id_versao) {
+                  <div class="table-row">
+                    <span>v{{ versao.numero_versao }}</span>
+                    <span>{{ versao.status_versao }}</span>
+                    <span>{{ formatarData(versao.data_envio) }}</span>
+                    <span>{{ versao.descricao_alteracao }}</span>
+                  </div>
+                }
+              </div>
+            }
+          </article>
+
+          <article class="details-card full-card">
+            <h2>Arquivos Registrados</h2>
+
+            @if (arquivos.length === 0) {
+              <p>
+                Nenhum arquivo registrado. No MVP atual, o sistema pode registrar
+                dados de arquivos, mas o upload físico de PDF ainda é futuro.
+              </p>
+            } @else {
+              <div class="table-like">
+                <div class="table-row table-head">
+                  <span>Arquivo</span>
+                  <span>Tipo</span>
+                  <span>Principal</span>
+                  <span>Acesso</span>
+                </div>
+
+                @for (arquivo of arquivos; track arquivo.id_arquivo) {
+                  <div class="table-row">
+                    <span>{{ arquivo.nome_arquivo }}</span>
+                    <span>{{ arquivo.tipo_arquivo }}</span>
+                    <span>{{ formatarPrincipal(arquivo.principal) }}</span>
+                    <span>{{ arquivo.nivel_acesso }}</span>
+                  </div>
+                }
+              </div>
+            }
+          </article>
+
+          <article class="details-card full-card">
+            <h2>Avaliações anteriores</h2>
+
+            @if (avaliacoes.length === 0) {
+              <p>Nenhuma avaliação registrada até o momento.</p>
+            } @else {
+              <div class="simple-list">
+                @for (avaliacao of avaliacoes; track avaliacao.id_avaliacao) {
+                  <div class="evaluation-item">
+                    <div>
+                      <strong>{{ nomeUsuarioPorId(avaliacao.id_professor) }}</strong>
+
+                      <span>
+                        Resultado: {{ formatarStatus(avaliacao.status_resultante) }}
+                        • Nota: {{ formatarNota(avaliacao.nota_final) }}
+                        • {{ formatarData(avaliacao.data_avaliacao) }}
+                      </span>
+                    </div>
+
+                    <p>{{ avaliacao.parecer }}</p>
+                  </div>
+                }
+              </div>
+            }
+          </article>
+
+          <article class="details-card full-card">
+            <h2>Registrar avaliação</h2>
+
+            @if (!podeAvaliar()) {
+              <p>
+                Este projeto já está com status
+                <strong>{{ formatarStatus(projeto.status) }}</strong>.
+                Por isso, novas decisões não estão disponíveis nesta etapa.
+              </p>
+            } @else {
+              <form class="evaluation-form" (ngSubmit)="registrarAvaliacao()">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="versao">Versão avaliada</label>
+
+                    <select
+                      id="versao"
+                      name="versao"
+                      [(ngModel)]="idVersaoSelecionada"
+                      required
+                    >
+                      @for (versao of versoes; track versao.id_versao) {
+                        <option [ngValue]="versao.id_versao">
+                          v{{ versao.numero_versao }} - {{ versao.status_versao }}
+                        </option>
+                      }
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="nota">Nota final</label>
+
+                    <input
+                      id="nota"
+                      name="nota"
+                      type="number"
+                      step="0.1"
+                      min="0"
+                      max="10"
+                      [(ngModel)]="notaFinal"
+                      placeholder="Ex: 8.5"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="decisao">Decisão</label>
+
+                    <select
+                      id="decisao"
+                      name="decisao"
+                      [(ngModel)]="decisao"
+                      required
+                    >
+                      <option value="aprovado">Aprovar</option>
+                      <option value="revisao_solicitada">Solicitar revisão</option>
+                      <option value="rejeitado">Rejeitar</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group full">
+                    <label for="parecer">Parecer do professor</label>
+
+                    <textarea
+                      id="parecer"
+                      name="parecer"
+                      rows="5"
+                      [(ngModel)]="parecer"
+                      placeholder="Escreva o parecer sobre o projeto."
+                      required
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div class="form-actions">
+                  <button
+                    type="submit"
+                    class="btn-primary"
+                    [disabled]="salvandoAvaliacao"
+                  >
+                    <i class="bi bi-send"></i>
+
+                    @if (salvandoAvaliacao) {
+                      Salvando avaliação...
+                    } @else {
+                      Registrar avaliação
+                    }
+                  </button>
+                </div>
+              </form>
+            }
+          </article>
+        </section>
+      }
+    </div>
+  </main>
+</section>
