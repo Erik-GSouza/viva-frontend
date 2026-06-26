@@ -329,6 +329,13 @@ export class ProfessorProjetoDetalhes implements OnInit {
         this.mensagemSucesso = 'Avaliação registrada com sucesso.';
 
         /*
+          Depois que o professor avalia, avisa o aluno
+          O back não cria essa notificação, então usa o front pra fazer isso
+          usando o endpoint de notificações
+        */
+        this.criarNotificacaoParaAluno(projetoAtualizado);
+
+        /*
           Limpa o parecer para evitar enviar o mesmo texto sem querer
         */
         this.parecer = '';
@@ -344,6 +351,55 @@ export class ProfessorProjetoDetalhes implements OnInit {
         this.salvandoAvaliacao = false;
         this.mensagemErro = `A avaliação foi registrada, mas houve erro ao atualizar o status. Código: ${erro.status}`;
         this.changeDetector.detectChanges();
+      }
+    });
+  }
+
+  criarNotificacaoParaAluno(projeto: Projeto): void {
+    let titulo = '';
+    let mensagem = '';
+    let tipo = '';
+
+    /*
+      monta a mensagem de acordo com a decisão final do professor
+      o aluno recebe um aviso mais claro
+    */
+    if (this.decisao === 'aprovado') {
+      titulo = 'Projeto aprovado';
+      mensagem = `Seu projeto "${projeto.titulo}" foi aprovado pelo professor.`;
+      tipo = 'aprovacao';
+    }
+
+    if (this.decisao === 'revisao_solicitada') {
+      titulo = 'Revisão solicitada';
+      mensagem = `Seu projeto "${projeto.titulo}" precisa de ajustes antes da aprovação final.`;
+      tipo = 'revisao';
+    }
+
+    if (this.decisao === 'rejeitado') {
+      titulo = 'Projeto rejeitado';
+      mensagem = `Seu projeto "${projeto.titulo}" foi rejeitado pelo professor.`;
+      tipo = 'avaliacao';
+    }
+
+    const dadosNotificacao = {
+      id_usuario: projeto.id_usuario_submissor,
+      titulo,
+      mensagem,
+      tipo,
+      lida: 0,
+      link_destino: `/aluno/projetos/${projeto.id_projeto}`
+    };
+
+    this.apiService.post<unknown>('/notificacoes', dadosNotificacao).subscribe({
+      next: () => {
+      },
+
+      error: () => {
+        /*
+          Se a notificação falhar, não desfazs a avaliação
+          O status do projeto e o parecer já foram salvos
+        */
       }
     });
   }

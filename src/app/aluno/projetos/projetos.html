@@ -29,6 +29,12 @@
         </div>
       }
 
+      @if (mensagemSucesso) {
+        <div class="alert alert-success">
+          {{ mensagemSucesso }}
+        </div>
+      }
+
       @if (carregando) {
         <div class="loading-card">
           <i class="bi bi-hourglass-split"></i>
@@ -139,9 +145,19 @@
                     </a>
 
                     @if (projeto.status === 'revisao_solicitada') {
-                      <button type="button" class="btn-warning" disabled>
+                      <button
+                        type="button"
+                        class="btn-warning"
+                        [disabled]="reenviandoId === projeto.id_projeto"
+                        (click)="reenviarProjeto(projeto)"
+                      >
                         <i class="bi bi-arrow-repeat"></i>
-                        Reenviar
+
+                        @if (reenviandoId === projeto.id_projeto) {
+                          Reenviando...
+                        } @else {
+                          Reenviar
+                        }
                       </button>
                     }
                   </div>
