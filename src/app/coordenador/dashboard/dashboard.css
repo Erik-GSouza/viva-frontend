@@ -292,7 +292,81 @@
   color: #92400e !important;
 }
 
-/* Responsividade simples */
+.secondary-stats {
+  margin-top: -6px;
+}
+
+.courses-card {
+  margin-bottom: 24px;
+}
+
+.empty-text {
+  margin: 0;
+  color: var(--viva-muted);
+  line-height: 1.6;
+}
+
+.alert {
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 18px;
+}
+
+.alert-danger {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.loading-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 22px;
+  padding: 42px;
+  text-align: center;
+  color: var(--viva-muted);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+}
+
+.loading-card i {
+  display: block;
+  font-size: 44px;
+  color: var(--viva-primary);
+  margin-bottom: 14px;
+}
+
+.status.default {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.stat-icon.danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/*
+  Ajuste visual do dashboard do coordenador
+  Com align-items: start, cada card fica com a altura necessária para o próprio conteúdo.
+*/
+.dashboard-grid {
+  align-items: start;
+}
+
+.dashboard-grid .chart-card {
+  min-height: auto;
+  height: fit-content;
+}
+
+.dashboard-grid .bar-chart {
+  gap: 12px;
+}
+
+.dashboard-grid .tech-list {
+  gap: 12px;
+}
+
+/* Responsividade */
 @media (max-width: 1200px) {
   .stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

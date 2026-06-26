@@ -77,16 +77,6 @@ export class Sidebar {
           icon: 'bi-folder2-open',
           route: '/coordenador/projetos'
         },
-        {
-          label: 'Exportar Relatórios',
-          icon: 'bi-file-earmark-pdf',
-          route: '/coordenador/relatorios'
-        },
-        {
-          label: 'Notificações',
-          icon: 'bi-bell',
-          route: '/coordenador/notificacoes'
-        }
       ];
     }
 

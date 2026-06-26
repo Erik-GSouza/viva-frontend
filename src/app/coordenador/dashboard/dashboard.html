@@ -1,233 +1,259 @@
 <section class="coordenador-page">
-  <!-- Menu lateral do coordenador -->
   <app-sidebar perfil="coordenador"></app-sidebar>
 
   <main class="page-content">
-    <!-- Topbar adaptada do coordenador -->
     <app-topbar
       titulo="Dashboard"
-      nomeUsuario="Mariana Silva"
-      perfil="Coordenadora"
+      [nomeUsuario]="usuarioLogado?.nome || 'Coordenador'"
+      perfil="Coordenador"
       perfilTipo="coordenador"
     ></app-topbar>
 
     <div class="content-area">
-      <!-- Cabeçalho da página -->
       <div class="page-header">
         <div>
           <h2>Visão geral da plataforma</h2>
           <p>Acompanhe os projetos, cursos, tecnologias e indicadores acadêmicos.</p>
         </div>
-
-        <!-- Esse botão poderá gerar um relatório rápido futuramente -->
-        <a class="btn-export" routerLink="/coordenador/relatorios">
-          <i class="bi bi-file-earmark-pdf"></i>
-          Exportar
-        </a>
       </div>
 
-      <!-- Cards principais do dashboard -->
-      <div class="stats-grid">
-        <article class="stat-card">
-          <div class="stat-icon primary">
-            <i class="bi bi-folder2-open"></i>
-          </div>
+      @if (mensagemErro) {
+        <div class="alert alert-danger">
+          {{ mensagemErro }}
+        </div>
+      }
 
-          <div>
-            <span>Total de Projetos</span>
-            <strong>234</strong>
-          </div>
-        </article>
-
-        <article class="stat-card">
-          <div class="stat-icon info">
-            <i class="bi bi-calendar-check"></i>
-          </div>
-
-          <div>
-            <span>Projetos neste semestre</span>
-            <strong>48</strong>
-          </div>
-        </article>
-
-        <article class="stat-card">
-          <div class="stat-icon success">
-            <i class="bi bi-mortarboard"></i>
-          </div>
-
-          <div>
-            <span>Cursos ativos</span>
-            <strong>6</strong>
-          </div>
-        </article>
-
-        <article class="stat-card">
-          <div class="stat-icon warning">
-            <i class="bi bi-graph-up-arrow"></i>
-          </div>
-
-          <div>
-            <span>Taxa de aprovação</span>
-            <strong>82%</strong>
-          </div>
-        </article>
-      </div>
-
-      <!-- area dos gráficos visuais -->
-      <div class="dashboard-grid">
-        <!-- grafico simples de projetos por semestre -->
-        <section class="chart-card">
-          <div class="card-header">
-            <h3>Projetos por semestre</h3>
-            <span>Últimos períodos</span>
-          </div>
-
-          <div class="bar-chart">
-            <div class="bar-item">
-              <span>2024.1</span>
-              <div class="bar-track">
-                <!-- 
-                largura provisoria da barra
-                depois esse valor virá do back-end ou de uma variável no ts por ex
-                -->
-                <div class="bar-fill" style="width: 55%;"></div>
-              </div>
-              <strong>32</strong>
+      @if (carregando) {
+        <div class="loading-card">
+          <i class="bi bi-hourglass-split"></i>
+          <p>Carregando dashboard do coordenador...</p>
+        </div>
+      } @else if (resumo) {
+        <div class="stats-grid">
+          <article class="stat-card">
+            <div class="stat-icon primary">
+              <i class="bi bi-folder2-open"></i>
             </div>
 
-            <div class="bar-item">
-              <span>2024.2</span>
-              <div class="bar-track">
-                <div class="bar-fill" style="width: 72%;"></div>
-              </div>
-              <strong>41</strong>
+            <div>
+              <span>Total de Projetos</span>
+              <strong>{{ resumo.total_projetos }}</strong>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon success">
+              <i class="bi bi-check-circle"></i>
             </div>
 
-            <div class="bar-item">
-              <span>2025.1</span>
-              <div class="bar-track">
-                <div class="bar-fill" style="width: 84%;"></div>
-              </div>
-              <strong>48</strong>
+            <div>
+              <span>Aprovados</span>
+              <strong>{{ resumo.projetos_aprovados }}</strong>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon warning">
+              <i class="bi bi-hourglass-split"></i>
             </div>
 
-            <div class="bar-item">
-              <span>2025.2</span>
-              <div class="bar-track">
-                <div class="bar-fill" style="width: 100%;"></div>
-              </div>
-              <strong>57</strong>
+            <div>
+              <span>Pendentes</span>
+              <strong>{{ resumo.projetos_pendentes }}</strong>
             </div>
-          </div>
-        </section>
+          </article>
 
-        <!-- Tecnologias mais usadas -->
-        <section class="chart-card">
-          <div class="card-header">
-            <h3>Tecnologias mais usadas</h3>
-            <span>Tags cadastradas nos projetos</span>
-          </div>
-
-          <div class="tech-list">
-            <div class="tech-item">
-              <span>Angular</span>
-              <strong>78 projetos</strong>
+          <article class="stat-card">
+            <div class="stat-icon info">
+              <i class="bi bi-globe2"></i>
             </div>
 
-            <div class="tech-item">
-              <span>Node.js</span>
-              <strong>64 projetos</strong>
+            <div>
+              <span>Publicados</span>
+              <strong>{{ resumo.projetos_publicados }}</strong>
             </div>
-
-            <div class="tech-item">
-              <span>MySQL</span>
-              <strong>59 projetos</strong>
-            </div>
-
-            <div class="tech-item">
-              <span>Bootstrap</span>
-              <strong>46 projetos</strong>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <!-- Projetos recentes -->
-      <section class="recent-projects">
-        <div class="card-header">
-          <div>
-            <h3>Projetos recentes</h3>
-            <span>Últimos projetos submetidos na plataforma</span>
-          </div>
-
-          <!-- Vai para Gestão de Projetos, não para a Vitrine -->
-          <a routerLink="/coordenador/projetos">Ver todos</a>
+          </article>
         </div>
 
-        <div class="table-responsive">
-          <table class="projects-table">
-            <thead>
-              <tr>
-                <th>Projeto</th>
-                <th>Curso</th>
-                <th>Orientador</th>
-                <th>Status</th>
-                <th>Envio</th>
-              </tr>
-            </thead>
+        <div class="stats-grid secondary-stats">
+          <article class="stat-card">
+            <div class="stat-icon primary">
+              <i class="bi bi-people"></i>
+            </div>
 
-            <tbody>
-              <tr>
-                <td>
-                  <strong>SaúdeConnect</strong>
-                  <span>Ana Beatriz Ferreira</span>
-                </td>
+            <div>
+              <span>Usuários</span>
+              <strong>{{ resumo.total_usuarios }}</strong>
+            </div>
+          </article>
 
-                <td>ADS</td>
-                <td>Prof. Carlos Mendes</td>
+          <article class="stat-card">
+            <div class="stat-icon success">
+              <i class="bi bi-mortarboard"></i>
+            </div>
 
-                <td>
-                  <span class="status approved">Aprovado</span>
-                </td>
+            <div>
+              <span>Cursos</span>
+              <strong>{{ resumo.total_cursos }}</strong>
+            </div>
+          </article>
 
-                <td>10/11/2025</td>
-              </tr>
+          <article class="stat-card">
+            <div class="stat-icon info">
+              <i class="bi bi-tags"></i>
+            </div>
 
-              <tr>
-                <td>
-                  <strong>RecifeMaps</strong>
-                  <span>Gabriel Nascimento</span>
-                </td>
+            <div>
+              <span>Tags</span>
+              <strong>{{ resumo.total_tags }}</strong>
+            </div>
+          </article>
 
-                <td>ADS</td>
-                <td>Prof. Rafael Oliveira</td>
+          <article class="stat-card">
+            <div class="stat-icon warning">
+              <i class="bi bi-award"></i>
+            </div>
 
-                <td>
-                  <span class="status review">Revisão solicitada</span>
-                </td>
-
-                <td>15/11/2025</td>
-              </tr>
-
-              <tr>
-                <td>
-                  <strong>EducaLab</strong>
-                  <span>Larissa Costa</span>
-                </td>
-
-                <td>Design</td>
-                <td>Prof. Carla Souza</td>
-
-                <td>
-                  <span class="status pending">Pendente</span>
-                </td>
-
-                <td>18/11/2025</td>
-              </tr>
-            </tbody>
-          </table>
+            <div>
+              <span>Competências</span>
+              <strong>{{ resumo.total_competencias }}</strong>
+            </div>
+          </article>
         </div>
-      </section>
+
+        <div class="dashboard-grid">
+          <section class="chart-card">
+            <div class="card-header">
+              <h3>Projetos por status</h3>
+              <span>Distribuição atual dos projetos</span>
+            </div>
+
+            @if (resumo.projetos_por_status.length === 0) {
+              <p class="empty-text">Nenhum dado de status encontrado.</p>
+            } @else {
+              <div class="bar-chart">
+                @for (item of resumo.projetos_por_status; track item.nome) {
+                  <div class="bar-item">
+                    <span>{{ formatarStatus(item.nome) }}</span>
+
+                    <div class="bar-track">
+                      <div
+                        class="bar-fill"
+                        [style.width.%]="larguraBarra(item, resumo.projetos_por_status)"
+                      ></div>
+                    </div>
+
+                    <strong>{{ item.total }}</strong>
+                  </div>
+                }
+              </div>
+            }
+          </section>
+
+          <section class="chart-card">
+            <div class="card-header">
+              <h3>Tecnologias mais usadas</h3>
+              <span>Tags vinculadas aos projetos</span>
+            </div>
+
+            @if (resumo.tecnologias_mais_usadas.length === 0) {
+              <p class="empty-text">Nenhuma tecnologia vinculada ainda.</p>
+            } @else {
+              <div class="tech-list">
+                @for (tecnologia of resumo.tecnologias_mais_usadas; track tecnologia.nome) {
+                  <div class="tech-item">
+                    <span>{{ tecnologia.nome }}</span>
+                    <strong>{{ tecnologia.total }} projeto(s)</strong>
+                  </div>
+                }
+              </div>
+            }
+          </section>
+        </div>
+
+        <section class="chart-card courses-card">
+          <div class="card-header">
+            <h3>Projetos por curso</h3>
+            <span>Quantidade de projetos por curso</span>
+          </div>
+
+          @if (resumo.projetos_por_curso.length === 0) {
+            <p class="empty-text">Nenhum projeto vinculado a curso ainda.</p>
+          } @else {
+            <div class="bar-chart">
+              @for (curso of resumo.projetos_por_curso; track curso.nome) {
+                <div class="bar-item">
+                  <span>{{ curso.nome }}</span>
+
+                  <div class="bar-track">
+                    <div
+                      class="bar-fill"
+                      [style.width.%]="larguraBarra(curso, resumo.projetos_por_curso)"
+                    ></div>
+                  </div>
+
+                  <strong>{{ curso.total }}</strong>
+                </div>
+              }
+            </div>
+          }
+        </section>
+
+        <section class="recent-projects">
+          <div class="card-header">
+            <div>
+              <h3>Projetos recentes</h3>
+              <span>Últimos projetos submetidos na plataforma</span>
+            </div>
+
+            <a routerLink="/coordenador/projetos">Ver todos</a>
+          </div>
+
+          @if (projetosRecentes.length === 0) {
+            <p class="empty-text">Nenhum projeto encontrado.</p>
+          } @else {
+            <div class="table-responsive">
+              <table class="projects-table">
+                <thead>
+                  <tr>
+                    <th>Projeto</th>
+                    <th>Curso</th>
+                    <th>Aluno</th>
+                    <th>Orientador</th>
+                    <th>Status</th>
+                    <th>Envio</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  @for (projeto of projetosRecentes; track projeto.id_projeto) {
+                    <tr>
+                      <td>
+                        <strong>{{ projeto.titulo }}</strong>
+                        <span>{{ projeto.descricao }}</span>
+                      </td>
+
+                      <td>{{ nomeCursoPorTurma(projeto.id_turma) }}</td>
+
+                      <td>{{ nomeUsuario(projeto.id_usuario_submissor) }}</td>
+
+                      <td>{{ nomeUsuario(projeto.id_professor_orientador) }}</td>
+
+                      <td>
+                        <span class="status {{ classeStatus(projeto.status) }}">
+                          {{ formatarStatus(projeto.status) }}
+                        </span>
+                      </td>
+
+                      <td>{{ formatarData(projeto.data_submissao) }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </section>
+      }
     </div>
   </main>
 </section>
