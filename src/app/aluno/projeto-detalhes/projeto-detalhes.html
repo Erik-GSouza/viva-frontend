@@ -10,7 +10,6 @@
     ></app-topbar>
 
     <div class="content-area">
-
       <a routerLink="/aluno/projetos" class="back-link">
         <i class="bi bi-arrow-left"></i>
         Voltar para meus projetos
@@ -28,10 +27,9 @@
           <p>Carregando detalhes do projeto...</p>
         </div>
       } @else if (projeto) {
-
         <section class="project-hero">
           <div>
-            <span class="status" [class]="classeStatus(projeto.status)">
+            <span class="status {{ classeStatus(projeto.status) }}">
               {{ formatarStatus(projeto.status) }}
             </span>
 
@@ -48,7 +46,6 @@
         </section>
 
         <section class="details-grid">
-
           <article class="details-card">
             <h2>Informações Gerais</h2>
 
@@ -102,14 +99,135 @@
           </article>
 
           <article class="details-card">
-            <h2>Arquivos do Projeto</h2>
+            <h2>Integrantes</h2>
 
-            <p>
-              No MVP inicial, o sistema registra as informações dos arquivos do projeto
-              O upload físico de PDF será implementado futuramente
-            </p>
+            @if (integrantes.length === 0) {
+              <p>Nenhum integrante vinculado.</p>
+            } @else {
+              <div class="simple-list">
+                @for (integrante of integrantes; track integrante.id_integrante_projeto) {
+                  <div class="list-item">
+                    <strong>{{ nomeUsuarioPorId(integrante.id_usuario) }}</strong>
+                    <span>{{ integrante.funcao }}</span>
+                  </div>
+                }
+              </div>
+            }
           </article>
 
+          <article class="details-card">
+            <h2>Tags e Tecnologias</h2>
+
+            @if (tags.length === 0) {
+              <p>Nenhuma tag vinculada.</p>
+            } @else {
+              <div class="chips">
+                @for (tag of tags; track tag.id_projeto_tag) {
+                  <span class="chip">
+                    {{ tag.nome }}
+                    <small>{{ tag.categoria }}</small>
+                  </span>
+                }
+              </div>
+            }
+          </article>
+
+          <article class="details-card">
+            <h2>Competências</h2>
+
+            @if (competencias.length === 0) {
+              <p>Nenhuma competência vinculada.</p>
+            } @else {
+              <div class="simple-list">
+                @for (competencia of competencias; track competencia.id_projeto_competencia) {
+                  <div class="list-item">
+                    <strong>{{ competencia.nome }}</strong>
+                    <span>{{ competencia.categoria }} • Nível: {{ competencia.nivel }}</span>
+                  </div>
+                }
+              </div>
+            }
+          </article>
+
+          <article class="details-card full-card">
+            <h2>Versões do Projeto</h2>
+
+            @if (versoes.length === 0) {
+              <p>Nenhuma versão registrada.</p>
+            } @else {
+              <div class="table-like">
+                <div class="table-row table-head">
+                  <span>Versão</span>
+                  <span>Status</span>
+                  <span>Envio</span>
+                  <span>Descrição</span>
+                </div>
+
+                @for (versao of versoes; track versao.id_versao) {
+                  <div class="table-row">
+                    <span>v{{ versao.numero_versao }}</span>
+                    <span>{{ versao.status_versao }}</span>
+                    <span>{{ formatarData(versao.data_envio) }}</span>
+                    <span>{{ versao.descricao_alteracao }}</span>
+                  </div>
+                }
+              </div>
+            }
+          </article>
+
+          <article class="details-card full-card">
+            <h2>Arquivos Registrados</h2>
+
+            @if (arquivos.length === 0) {
+              <p>
+                Nenhum arquivo registrado. No MVP atual, o sistema pode registrar
+                dados de arquivos, mas o upload físico de PDF ainda é futuro.
+              </p>
+            } @else {
+              <div class="table-like">
+                <div class="table-row table-head">
+                  <span>Arquivo</span>
+                  <span>Tipo</span>
+                  <span>Principal</span>
+                  <span>Acesso</span>
+                </div>
+
+                @for (arquivo of arquivos; track arquivo.id_arquivo) {
+                  <div class="table-row">
+                    <span>{{ arquivo.nome_arquivo }}</span>
+                    <span>{{ arquivo.tipo_arquivo }}</span>
+                    <span>{{ formatarPrincipal(arquivo.principal) }}</span>
+                    <span>{{ arquivo.nivel_acesso }}</span>
+                  </div>
+                }
+              </div>
+            }
+          </article>
+
+          <article class="details-card full-card">
+            <h2>Avaliações</h2>
+
+            @if (avaliacoes.length === 0) {
+              <p>Nenhuma avaliação registrada até o momento.</p>
+            } @else {
+              <div class="simple-list">
+                @for (avaliacao of avaliacoes; track avaliacao.id_avaliacao) {
+                  <div class="evaluation-item">
+                    <div>
+                      <strong>{{ nomeUsuarioPorId(avaliacao.id_professor) }}</strong>
+                      <span>
+                        Resultado: {{ formatarStatus(avaliacao.status_resultante) }}
+                        • Nota: {{ formatarNota(avaliacao.nota_final) }}
+                        • {{ formatarData(avaliacao.data_avaliacao) }}
+                      </span>
+                    </div>
+
+                    <p>{{ avaliacao.parecer }}</p>
+                  </div>
+                }
+              </div>
+            }
+          </article>
         </section>
       }
     </div>
