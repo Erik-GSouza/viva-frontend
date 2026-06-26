@@ -1,8 +1,3 @@
-/*
-  Tela Meus Projetos do aluno.
-  Usa o mesmo padrão das telas internas do sistema.
-*/
-
 .app-page {
   min-height: 100vh;
   display: flex;
@@ -52,6 +47,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  text-decoration: none;
 }
 
 .btn-primary:disabled {
@@ -239,7 +235,7 @@
 }
 
 /* Botões do card */
-.project-actions {
+.card-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
@@ -298,6 +294,34 @@
   color: var(--viva-text);
   font-weight: 800;
   margin-bottom: 8px;
+}
+
+/* Remove aparência padrão de link nos botões */
+a.btn-primary,
+a.btn-primary:visited,
+a.btn-primary:hover,
+a.btn-primary:active,
+a.btn-outline,
+a.btn-outline:visited,
+a.btn-outline:hover,
+a.btn-outline:active {
+  text-decoration: none !important;
+}
+
+/* Garante que o botão principal continue branco ao passar o mouse */
+a.btn-primary,
+a.btn-primary:visited,
+a.btn-primary:hover,
+a.btn-primary:active {
+  color: #ffffff;
+}
+
+/* Garante que o botão de detalhes mantenha a cor correta */
+a.btn-outline,
+a.btn-outline:visited,
+a.btn-outline:hover,
+a.btn-outline:active {
+  color: #374151;
 }
 
 /* Responsividade */

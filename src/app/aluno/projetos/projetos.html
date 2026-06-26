@@ -17,10 +17,10 @@
           <p>Acompanhe seus Projetos Integradores submetidos na plataforma.</p>
         </div>
 
-        <button class="btn-primary" type="button" disabled>
+        <a class="btn-primary" routerLink="/aluno/submeter-projeto">
           <i class="bi bi-plus-lg"></i>
           Submeter Novo Projeto
-        </button>
+        </a>
       </div>
 
       @if (mensagemErro) {
@@ -137,13 +137,6 @@
                       <i class="bi bi-eye"></i>
                       Ver detalhes
                     </a>
-
-                    @if (projeto.status === 'aprovado') {
-                      <button type="button" class="btn-primary small" disabled>
-                        <i class="bi bi-person-badge"></i>
-                        Portfólio
-                      </button>
-                    }
 
                     @if (projeto.status === 'revisao_solicitada') {
                       <button type="button" class="btn-warning" disabled>

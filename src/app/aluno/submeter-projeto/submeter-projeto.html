@@ -1,0 +1,211 @@
+<section class="app-page">
+  <app-sidebar perfil="aluno"></app-sidebar>
+
+  <main class="page-content">
+    <app-topbar
+      titulo="Submeter Projeto"
+      [nomeUsuario]="usuarioLogado?.nome || 'Aluno'"
+      perfil="Aluno"
+      perfilTipo="aluno"
+    ></app-topbar>
+
+    <div class="content-area">
+      <a routerLink="/aluno/projetos" class="back-link">
+        <i class="bi bi-arrow-left"></i>
+        Voltar para meus projetos
+      </a>
+
+      <div class="page-header">
+        <div>
+          <h2>Submeter Novo Projeto</h2>
+          <p>Cadastre as informações principais do seu Projeto Integrador.</p>
+        </div>
+      </div>
+
+      @if (mensagemErro) {
+        <div class="alert alert-danger">
+          {{ mensagemErro }}
+        </div>
+      }
+
+      @if (mensagemSucesso) {
+        <div class="alert alert-success">
+          {{ mensagemSucesso }}
+        </div>
+      }
+
+      @if (carregando) {
+        <div class="loading-card">
+          <i class="bi bi-hourglass-split"></i>
+          <p>Carregando dados do formulário...</p>
+        </div>
+      } @else {
+        <form class="form-card" (ngSubmit)="submeterProjeto()">
+          <section class="form-section">
+            <h3>Informações principais</h3>
+
+            <div class="form-grid">
+              <div class="form-group full">
+                <label for="titulo">Título do projeto</label>
+                <input
+                  id="titulo"
+                  type="text"
+                  name="titulo"
+                  [(ngModel)]="titulo"
+                  placeholder="Ex: Sistema VIVA"
+                  required
+                />
+              </div>
+
+              <div class="form-group full">
+                <label for="descricao">Descrição</label>
+                <textarea
+                  id="descricao"
+                  name="descricao"
+                  rows="4"
+                  [(ngModel)]="descricao"
+                  placeholder="Descreva o objetivo geral do projeto."
+                  required
+                ></textarea>
+              </div>
+
+              <div class="form-group full">
+                <label for="problema">Problema identificado</label>
+                <textarea
+                  id="problema"
+                  name="problema"
+                  rows="3"
+                  [(ngModel)]="problema"
+                  placeholder="Explique qual problema o projeto busca resolver."
+                ></textarea>
+              </div>
+
+              <div class="form-group full">
+                <label for="solucao">Solução proposta</label>
+                <textarea
+                  id="solucao"
+                  name="solucao"
+                  rows="3"
+                  [(ngModel)]="solucao"
+                  placeholder="Explique como o projeto propõe resolver o problema."
+                ></textarea>
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <h3>Turma e orientação</h3>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="turma">Turma</label>
+                <select
+                  id="turma"
+                  name="turma"
+                  [(ngModel)]="idTurma"
+                  required
+                >
+                  <option [ngValue]="null">Selecione uma turma</option>
+
+                  @for (turma of turmas; track turma.id_turma) {
+                    <option [ngValue]="turma.id_turma">
+                      {{ turma.nome }} - {{ turma.semestre }}/{{ turma.ano }}
+                    </option>
+                  }
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="professor">Professor orientador</label>
+                <select
+                  id="professor"
+                  name="professor"
+                  [(ngModel)]="idProfessorOrientador"
+                  required
+                >
+                  <option [ngValue]="null">Selecione um professor</option>
+
+                  @for (professor of professores; track professor.id_usuario) {
+                    <option [ngValue]="professor.id_usuario">
+                      {{ professor.nome }}
+                    </option>
+                  }
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <h3>Tags e tecnologias</h3>
+
+            @if (tags.length === 0) {
+              <p class="muted-text">Nenhuma tag ativa cadastrada.</p>
+            } @else {
+              <div class="checkbox-grid">
+                @for (tag of tags; track tag.id_tag) {
+                  <label class="check-card">
+                    <input
+                      type="checkbox"
+                      [checked]="tagsSelecionadas.includes(tag.id_tag)"
+                      (change)="alternarTag(tag.id_tag, $event)"
+                    />
+
+                    <span>
+                      {{ tag.nome }}
+                      <small>{{ tag.categoria }}</small>
+                    </span>
+                  </label>
+                }
+              </div>
+            }
+          </section>
+
+          <section class="form-section">
+            <h3>Competências</h3>
+
+            @if (competencias.length === 0) {
+              <p class="muted-text">Nenhuma competência ativa cadastrada.</p>
+            } @else {
+              <div class="checkbox-grid">
+                @for (competencia of competencias; track competencia.id_competencia) {
+                  <label class="check-card">
+                    <input
+                      type="checkbox"
+                      [checked]="competenciasSelecionadas.includes(competencia.id_competencia)"
+                      (change)="alternarCompetencia(competencia.id_competencia, $event)"
+                    />
+
+                    <span>
+                      {{ competencia.nome }}
+                      <small>{{ competencia.categoria }}</small>
+                    </span>
+                  </label>
+                }
+              </div>
+            }
+          </section>
+
+          <div class="form-actions">
+            <a routerLink="/aluno/projetos" class="btn-outline">
+              Cancelar
+            </a>
+
+            <button
+              type="submit"
+              class="btn-primary"
+              [disabled]="salvando || !formularioValido()"
+            >
+              <i class="bi bi-send"></i>
+
+              @if (salvando) {
+                Submetendo...
+              } @else {
+                Submeter Projeto
+              }
+            </button>
+          </div>
+        </form>
+      }
+    </div>
+  </main>
+</section>

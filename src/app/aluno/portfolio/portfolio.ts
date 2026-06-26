@@ -14,7 +14,7 @@ interface Portfolio {
   id_portfolio: number;
   id_usuario: number;
   titulo?: string | null;
-  descricao?: string | null;
+  bio?: string | null;
   data_criacao?: string | null;
   data_atualizacao?: string | null;
 }

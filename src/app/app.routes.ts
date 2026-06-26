@@ -8,6 +8,7 @@ import { CoordenadorProjetos } from './coordenador/projetos/projetos';
 import { AlunoProjetoDetalhes } from './aluno/projeto-detalhes/projeto-detalhes';
 import { AlunoNotificacoes } from './aluno/notificacoes/notificacoes';
 import { AlunoPortfolio } from './aluno/portfolio/portfolio';
+import { AlunoSubmeterProjeto } from './aluno/submeter-projeto/submeter-projeto';
 
 export const routes: Routes = [
   {
@@ -34,6 +35,10 @@ export const routes: Routes = [
   {
     path: 'aluno/portfolio',
     component: AlunoPortfolio
+  },
+  {
+    path: 'aluno/submeter-projeto',
+    component: AlunoSubmeterProjeto
   },
   {
     path: 'professor/fila-aprovacao',

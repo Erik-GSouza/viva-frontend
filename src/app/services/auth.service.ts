@@ -15,6 +15,7 @@ export interface UsuarioLogado {
   email: string;
   status: string;
   id_perfil?: number;
+  id_turma?: number | null;
   perfil?: string;
   nome_perfil?: string;
 }
