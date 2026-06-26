@@ -1,8 +1,4 @@
-/*
-  Layout principal da tela do professor
-  Sidebar a esquerda e conteúdo a direita
-*/
-.professor-page {
+.app-page {
   min-height: 100vh;
   display: flex;
   background: var(--viva-background);
@@ -17,15 +13,14 @@
   padding: 28px;
 }
 
-/* Cabeçalho da página */
 .page-header {
   margin-bottom: 24px;
 }
 
 .page-header h2 {
   margin: 0;
-  font-size: 26px;
-  font-weight: 800;
+  font-size: 32px;
+  font-weight: 900;
   color: var(--viva-text);
 }
 
@@ -34,114 +29,227 @@
   color: var(--viva-muted);
 }
 
-/* Cards pequenos de resumo */
-.summary-grid {
+.stats-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
-.summary-card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 20px;
-  padding: 20px;
-
-  display: flex;
-  align-items: center;
-  gap: 14px;
-
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
-}
-
-.summary-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 16px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 22px;
-}
-
-/* Cores dos cards de resumo */
-.summary-icon.warning {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.summary-icon.info {
-  background: var(--viva-primary-soft);
-  color: var(--viva-primary);
-}
-
-.summary-icon.success {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.summary-card strong {
-  display: block;
-  font-size: 26px;
-  font-weight: 800;
-  color: var(--viva-text);
-}
-
-.summary-card span {
-  color: var(--viva-muted);
-  font-weight: 600;
-}
-
-/* Divide a página em lista de projetos e card lateral */
-.approval-layout {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 24px;
-}
-
-/* Lista dos projetos que precisam de atenção */
-.approval-list {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-/* Card de cada projeto */
-.approval-card {
+.stat-card {
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 22px;
   padding: 22px;
 
   display: flex;
-  justify-content: space-between;
-  gap: 18px;
+  align-items: center;
+  gap: 16px;
 
   box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
 }
 
-.project-info h3 {
-  margin: 10px 0;
-  font-size: 22px;
-  font-weight: 800;
+.stat-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 24px;
+}
+
+.stat-icon.primary {
+  background: #e0f2fe;
+  color: var(--viva-primary);
+}
+
+.stat-icon.warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.stat-icon.info {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.stat-icon.success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.stat-card span {
+  color: var(--viva-muted);
+  font-weight: 700;
+}
+
+.stat-card strong {
+  display: block;
+  font-size: 32px;
+  font-weight: 900;
   color: var(--viva-text);
 }
 
-.project-info p {
+.filter-bar {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  padding: 10px;
+  margin-bottom: 22px;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-bar button {
+  border: none;
+  border-radius: 12px;
+  background: transparent;
   color: var(--viva-muted);
+  font-weight: 800;
+  padding: 10px 14px;
+}
+
+.filter-bar button.active {
+  background: var(--viva-primary);
+  color: #ffffff;
+}
+
+.projects-list {
+  display: grid;
+  gap: 18px;
+}
+
+.project-review-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 24px;
+  padding: 24px;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px;
+
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+}
+
+.project-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   margin-bottom: 14px;
 }
 
-/* Status do projeto */
+.date {
+  color: var(--viva-muted);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.project-main h3 {
+  margin: 0 0 10px;
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--viva-text);
+}
+
+.project-main p {
+  margin: 0 0 18px;
+  color: var(--viva-muted);
+  line-height: 1.6;
+}
+
+.project-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.project-meta div {
+  background: #f9fafb;
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.project-meta span {
+  display: block;
+  font-size: 12px;
+  color: var(--viva-muted);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.project-meta strong {
+  color: var(--viva-text);
+}
+
+.project-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 190px;
+}
+
+.btn-outline,
+.btn-success,
+.btn-warning,
+.btn-danger {
+  border: none;
+  border-radius: 14px;
+  min-height: 42px;
+  padding: 0 14px;
+  font-weight: 900;
+  text-decoration: none;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-outline {
+  background: #ffffff;
+  color: var(--viva-primary);
+  border: 1px solid #bfdbfe;
+}
+
+.btn-success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.btn-warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.btn-danger {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.btn-success:disabled,
+.btn-warning:disabled,
+.btn-danger:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
 .status {
   display: inline-block;
   padding: 6px 10px;
   border-radius: 999px;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 900;
+}
+
+.status.approved {
+  background: #dcfce7;
+  color: #166534;
 }
 
 .status.pending {
@@ -149,153 +257,80 @@
   color: #92400e;
 }
 
-.status.resent {
-  background: var(--viva-primary-soft);
-  color: var(--viva-primary);
+.status.review {
+  background: #e0f2fe;
+  color: #0369a1;
 }
 
-/* Informações como aluno, curso e semestre */
-.project-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px;
-  margin-bottom: 14px;
-  color: #4b5563;
-  font-size: 14px;
-  font-weight: 600;
+.status.rejected {
+  background: #fee2e2;
+  color: #991b1b;
 }
 
-.project-meta span {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.status.default {
+  background: #e5e7eb;
+  color: #374151;
 }
 
-/* Tags/tecnologias */
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.tags span {
-  background: var(--viva-primary-soft);
-  color: var(--viva-primary);
-  border-radius: 999px;
-  padding: 6px 10px;
-  font-size: 13px;
-  font-weight: 700;
-}
-
-/* Área do botão do card */
-.project-actions {
-  display: flex;
-  align-items: center;
-}
-
-.btn-view {
-  min-width: 140px;
-  height: 44px;
-  border-radius: 14px;
-  background: var(--viva-primary);
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 800;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.btn-view:hover {
-  background: var(--viva-primary-dark);
-}
-
-/* Card lateral de orientandos */
-.orientandos-card {
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 22px;
-  padding: 20px;
-  height: fit-content;
-
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
-}
-
-.card-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.alert {
+  border-radius: 16px;
+  padding: 14px 16px;
   margin-bottom: 18px;
 }
 
-.card-title h3 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--viva-text);
+.alert-danger {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
 }
 
-.card-title a {
-  color: var(--viva-primary);
-  font-weight: 700;
-  text-decoration: none;
-  font-size: 14px;
+.alert-success {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
 }
 
-.orientando-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 0;
-  border-top: 1px solid #f3f4f6;
-}
-
-.orientando-item:first-of-type {
-  border-top: none;
-}
-
-.avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: var(--viva-primary);
-  color: #ffffff;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-weight: 800;
-}
-
-.orientando-item strong {
-  display: block;
-  color: var(--viva-text);
-  font-size: 14px;
-}
-
-.orientando-item span {
+.loading-card,
+.empty-state {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 22px;
+  padding: 42px;
+  text-align: center;
   color: var(--viva-muted);
-  font-size: 13px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
 }
 
-/* Responsividade */
+.loading-card i,
+.empty-state i {
+  display: block;
+  font-size: 44px;
+  color: var(--viva-primary);
+  margin-bottom: 14px;
+}
+
+.empty-state h3 {
+  margin: 0 0 8px;
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--viva-text);
+}
+
+.empty-state p {
+  margin: 0;
+}
+
 @media (max-width: 1100px) {
-  .approval-layout {
+  .stats-grid,
+  .project-meta {
     grid-template-columns: 1fr;
   }
 
-  .summary-grid {
+  .project-review-card {
     grid-template-columns: 1fr;
-  }
-
-  .approval-card {
-    flex-direction: column;
   }
 
   .project-actions {
-    justify-content: flex-start;
+    min-width: 0;
   }
 }
