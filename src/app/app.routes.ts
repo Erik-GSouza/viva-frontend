@@ -4,6 +4,7 @@ import { Login } from './auth/login/login';
 import { AlunoProjetos } from './aluno/projetos/projetos';
 import { FilaAprovacao } from './professor/fila-aprovacao/fila-aprovacao';
 import { ProfessorProjetoDetalhes } from './professor/projeto-detalhes/projeto-detalhes';
+import { ProfessorNotificacoes } from './professor/notificacoes/notificacoes';
 import { Dashboard } from './coordenador/dashboard/dashboard';
 import { CoordenadorProjetos } from './coordenador/projetos/projetos';
 import { AlunoProjetoDetalhes } from './aluno/projeto-detalhes/projeto-detalhes';
@@ -48,6 +49,10 @@ export const routes: Routes = [
   {
     path: 'professor/projetos/:id',
     component: ProfessorProjetoDetalhes
+  },
+  {
+    path: 'professor/notificacoes',
+    component: ProfessorNotificacoes
   },
   {
     path: 'coordenador/dashboard',

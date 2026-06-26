@@ -1,19 +1,19 @@
 <section class="app-page">
-  <app-sidebar perfil="aluno"></app-sidebar>
+  <app-sidebar perfil="professor"></app-sidebar>
 
   <main class="page-content">
     <app-topbar
       titulo="Notificações"
-      [nomeUsuario]="usuarioLogado?.nome || 'Aluno'"
-      perfil="Aluno"
-      perfilTipo="aluno"
+      [nomeUsuario]="usuarioLogado?.nome || 'Professor'"
+      perfil="Professor"
+      perfilTipo="professor"
     ></app-topbar>
 
     <div class="content-area">
       <div class="page-header">
         <div>
           <h2>Notificações</h2>
-          <p>Acompanhe avisos sobre seus Projetos Integradores.</p>
+          <p>Acompanhe avisos relacionados aos projetos orientados por você.</p>
         </div>
 
       </div>
@@ -72,15 +72,13 @@
             <h3>Nenhuma notificação encontrada</h3>
 
             <p>
-              Quando houver atualizações sobre seus projetos, elas aparecerão aqui.
+              Quando houver avisos sobre projetos orientados por você, eles aparecerão aqui.
             </p>
           </div>
         } @else {
           <div class="notifications-list">
             @for (notificacao of notificacoes; track notificacao.id_notificacao) {
-              <article
-                class="notification-card {{ notificacaoLida(notificacao) ? 'read' : 'unread' }}"
-              >
+              <article class="notification-card {{ notificacaoLida(notificacao) ? 'read' : 'unread' }}">
                 <div class="notification-icon {{ classePorTipo(notificacao.tipo) }}">
                   <i class="bi {{ iconePorTipo(notificacao.tipo) }}"></i>
                 </div>
@@ -107,28 +105,38 @@
                   </p>
 
                   <div class="notification-actions">
+                    @if (notificacao.link_destino) {
+                        <a
+                        class="btn-outline"
+                        [routerLink]="notificacao.link_destino"
+                        >
+                        <i class="bi bi-box-arrow-up-right"></i>
+                        Ver destino
+                        </a>
+                    }
+
                     @if (!notificacaoLida(notificacao)) {
-                      <button
+                        <button
                         type="button"
                         class="btn-outline"
                         [disabled]="marcandoId === notificacao.id_notificacao"
                         (click)="marcarComoLida(notificacao)"
-                      >
+                        >
                         <i class="bi bi-check2"></i>
 
                         @if (marcandoId === notificacao.id_notificacao) {
-                          Salvando...
+                            Salvando...
                         } @else {
-                          Marcar como lida
+                            Marcar como lida
                         }
-                      </button>
+                        </button>
                     } @else {
-                      <span class="read-label">
+                        <span class="read-label">
                         <i class="bi bi-check2-circle"></i>
                         Lida
-                      </span>
+                        </span>
                     }
-                  </div>
+                    </div>
                 </div>
               </article>
             }
