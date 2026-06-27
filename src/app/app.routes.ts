@@ -12,11 +12,14 @@ import { AlunoProjetoDetalhes } from './aluno/projeto-detalhes/projeto-detalhes'
 import { AlunoNotificacoes } from './aluno/notificacoes/notificacoes';
 import { AlunoPortfolio } from './aluno/portfolio/portfolio';
 import { AlunoSubmeterProjeto } from './aluno/submeter-projeto/submeter-projeto';
+import { VitrinePublica } from './publico/vitrine-publica/vitrine-publica';
+import { ProjetoPublicoDetalhes } from './publico/projeto-publico-detalhes/projeto-publico-detalhes';
+import { PortfolioPublicoComponent } from './publico/portfolio-publico/portfolio-publico';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'vitrine',
     pathMatch: 'full'
   },
   {
@@ -67,6 +70,18 @@ export const routes: Routes = [
     path: 'coordenador/projetos',
     component: CoordenadorProjetos
   },
+  {
+    path: 'vitrine',
+    component: VitrinePublica
+  },
+  {
+    path: 'vitrine/:slug_publico',
+    component: ProjetoPublicoDetalhes
+  },
+  {
+    path: 'portfolio/:slug_publico',
+    component: PortfolioPublicoComponent
+  },  
   {
     path: '**',
     redirectTo: 'login'

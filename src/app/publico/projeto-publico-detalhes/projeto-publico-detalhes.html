@@ -1,0 +1,170 @@
+<section class="public-page">
+  <header class="public-header">
+    <a class="brand" routerLink="/vitrine">
+      <div class="brand-icon">
+        <i class="bi bi-mortarboard-fill"></i>
+      </div>
+
+      <div>
+        <strong>VIVA</strong>
+        <span>Observatório PI</span>
+      </div>
+    </a>
+
+    <div class="header-actions">
+      <a class="secondary-link" routerLink="/vitrine">
+        <i class="bi bi-arrow-left"></i>
+        Voltar para vitrine
+      </a>
+
+      <a class="login-link" routerLink="/login">
+        <i class="bi bi-box-arrow-in-right"></i>
+        Entrar
+      </a>
+    </div>
+  </header>
+
+  <main class="public-content">
+    @if (mensagemErro) {
+      <div class="alert alert-danger">
+        {{ mensagemErro }}
+      </div>
+    }
+
+    @if (carregando) {
+      <div class="loading-card">
+        <i class="bi bi-hourglass-split"></i>
+        <p>Carregando projeto público...</p>
+      </div>
+    } @else if (projeto) {
+      <section class="project-hero">
+        <span class="hero-badge">
+          {{ textoCurso() }}
+        </span>
+
+        <h1>{{ projeto.titulo }}</h1>
+
+        <p>{{ projeto.descricao }}</p>
+      </section>
+
+      <section class="info-grid">
+        <article class="info-card">
+          <span>Curso</span>
+          <strong>{{ projeto.curso || textoCurso() }}</strong>
+        </article>
+
+        <article class="info-card">
+          <span>Turma</span>
+          <strong>{{ projeto.turma || '-' }}</strong>
+        </article>
+
+        <article class="info-card">
+          <span>Data de aprovação</span>
+          <strong>{{ formatarData(projeto.data_aprovacao) }}</strong>
+        </article>
+      </section>
+
+      <section class="details-grid">
+        <article class="details-card">
+          <h2>Problema identificado</h2>
+
+          <p>
+            {{ projeto.problema || 'Nenhum problema foi informado para este projeto.' }}
+          </p>
+        </article>
+
+        <article class="details-card">
+          <h2>Solução proposta</h2>
+
+          <p>
+            {{ projeto.solucao || 'Nenhuma solução foi informada para este projeto.' }}
+          </p>
+        </article>
+
+        <article class="details-card full-card">
+          <h2>Tecnologias utilizadas</h2>
+
+          @if (tags.length === 0) {
+            <p>Nenhuma tecnologia foi vinculada a este projeto.</p>
+          } @else {
+            <div class="chips">
+              @for (tag of tags; track tag.id_tag) {
+                <span class="chip">
+                  {{ tag.nome }}
+                  <small>{{ tag.categoria }}</small>
+                </span>
+              }
+            </div>
+          }
+        </article>
+
+        <article class="details-card full-card">
+          <h2>Competências desenvolvidas</h2>
+
+          @if (competencias.length === 0) {
+            <p>Nenhuma competência foi vinculada a este projeto.</p>
+          } @else {
+            <div class="competence-list">
+              @for (competencia of competencias; track competencia.id_competencia) {
+                <div class="competence-item">
+                  <div>
+                    <strong>{{ competencia.nome }}</strong>
+
+                    <span>
+                      {{ competencia.categoria }} • Nível: {{ formatarNivel(competencia.nivel) }}
+                    </span>
+                  </div>
+
+                  @if (competencia.descricao) {
+                    <p>{{ competencia.descricao }}</p>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </article>
+
+        <article class="details-card full-card">
+          <h2>Participantes do projeto</h2>
+
+          @if (integrantes.length === 0) {
+            <p>Nenhum participante foi vinculado a este projeto.</p>
+          } @else {
+            <div class="participants-grid">
+              @for (integrante of integrantes; track integrante.id_usuario) {
+                <div class="participant-card">
+                  <div class="participant-avatar">
+                    {{ integrante.nome.charAt(0) }}
+                  </div>
+
+                  <div>
+                    <strong>{{ integrante.nome }}</strong>
+                    <span>{{ integrante.funcao }}</span>
+
+                    @if (integrante.slug_portfolio) {
+                      <a
+                        class="portfolio-link"
+                        [routerLink]="['/portfolio', integrante.slug_portfolio]"
+                      >
+                        Ver portfólio público
+                        <i class="bi bi-arrow-right"></i>
+                      </a>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </article>
+
+        <article class="details-card full-card">
+          <h2>Sobre o projeto</h2>
+
+          <p>
+            {{ projeto.descricao }}
+          </p>
+        </article>
+      </section>
+    }
+  </main>
+</section>

@@ -1,0 +1,138 @@
+<section class="public-page">
+  <header class="public-header">
+    <a class="brand" routerLink="/vitrine">
+      <div class="brand-icon">
+        <i class="bi bi-mortarboard-fill"></i>
+      </div>
+
+      <div>
+        <strong>VIVA</strong>
+        <span>Observatório PI</span>
+      </div>
+    </a>
+
+    <div class="header-actions">
+      <a class="secondary-link" routerLink="/vitrine">
+        <i class="bi bi-arrow-left"></i>
+        Voltar para vitrine
+      </a>
+
+      <a class="login-link" routerLink="/login">
+        <i class="bi bi-box-arrow-in-right"></i>
+        Entrar
+      </a>
+    </div>
+  </header>
+
+  <main class="public-content">
+    @if (mensagemErro) {
+      <div class="alert alert-danger">
+        {{ mensagemErro }}
+      </div>
+    }
+
+    @if (carregando) {
+      <div class="loading-card">
+        <i class="bi bi-hourglass-split"></i>
+        <p>Carregando portfólio público...</p>
+      </div>
+    } @else if (portfolio) {
+      <section class="portfolio-hero">
+        <div class="avatar-large">
+          {{ portfolio.nome_usuario.charAt(0) }}
+        </div>
+
+        <div>
+          <span class="hero-badge">Portfólio público</span>
+
+          <h1>{{ portfolio.nome_usuario }}</h1>
+
+          <h2>{{ portfolio.titulo }}</h2>
+
+          <p>
+            {{ portfolio.bio || 'Este aluno ainda não adicionou uma descrição ao portfólio.' }}
+          </p>
+        </div>
+      </section>
+
+      <section class="summary-grid">
+        <article class="summary-card">
+          <span>Projetos publicados</span>
+          <strong>{{ projetos.length }}</strong>
+        </article>
+
+        <article class="summary-card">
+          <span>Status do portfólio</span>
+          <strong>Ativo</strong>
+        </article>
+      </section>
+
+      <section class="projects-section">
+        <div class="section-header">
+          <h2>Projetos em que participou</h2>
+          <p>Projetos publicados na vitrine pública do VIVA.</p>
+        </div>
+
+        @if (projetos.length === 0) {
+          <div class="empty-state">
+            <i class="bi bi-folder-x"></i>
+
+            <h3>Nenhum projeto publicado encontrado</h3>
+
+            <p>
+              Este aluno ainda não possui projetos publicados na vitrine.
+            </p>
+          </div>
+        } @else {
+          <div class="projects-grid">
+            @for (projeto of projetos; track projeto.id_projeto) {
+              <article class="project-card">
+                <div class="project-cover">
+                  <i class="bi bi-lightbulb"></i>
+                </div>
+
+                <div class="project-body">
+                  <div class="project-meta">
+                    <span class="course-badge">
+                      {{ textoCurso(projeto) }}
+                    </span>
+
+                    <span class="date">
+                      {{ formatarData(projeto.data_aprovacao) }}
+                    </span>
+                  </div>
+
+                  <h3>{{ projeto.titulo }}</h3>
+
+                  <p>{{ projeto.descricao }}</p>
+
+                  <div class="project-info">
+                    <div>
+                      <span>Função</span>
+                      <strong>{{ projeto.funcao }}</strong>
+                    </div>
+
+                    <div>
+                      <span>Turma</span>
+                      <strong>{{ projeto.turma || '-' }}</strong>
+                    </div>
+                  </div>
+
+                  @if (projeto.slug_publico) {
+                    <a
+                      class="project-link"
+                      [routerLink]="['/vitrine', projeto.slug_publico]"
+                    >
+                      Ver projeto
+                      <i class="bi bi-arrow-right"></i>
+                    </a>
+                  }
+                </div>
+              </article>
+            }
+          </div>
+        }
+      </section>
+    }
+  </main>
+</section>

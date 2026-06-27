@@ -1,0 +1,168 @@
+<section class="public-page">
+  <header class="public-header">
+    <a class="brand" routerLink="/vitrine">
+      <div class="brand-icon">
+        <i class="bi bi-mortarboard-fill"></i>
+      </div>
+
+      <div>
+        <strong>VIVA</strong>
+        <span>Observatório PI</span>
+      </div>
+    </a>
+
+    <a class="login-link" routerLink="/login">
+      <i class="bi bi-box-arrow-in-right"></i>
+      Entrar
+    </a>
+  </header>
+
+  <main class="public-content">
+    <section class="hero">
+      <span class="hero-badge">Vitrine pública</span>
+
+      <h1>Projetos Integradores publicados</h1>
+
+      <p>
+        Explore projetos aprovados e publicados.
+      </p>
+    </section>
+
+    <section class="filters-card">
+      <div class="filters-grid">
+        <div class="form-group">
+          <label for="busca">Busca</label>
+
+          <input
+            id="busca"
+            type="text"
+            placeholder="Título, descrição, problema ou solução"
+            [(ngModel)]="busca"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="curso">Curso</label>
+
+          <input
+            id="curso"
+            type="text"
+            placeholder="Ex: ADS"
+            [(ngModel)]="curso"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="tecnologia">Tecnologia</label>
+
+          <input
+            id="tecnologia"
+            type="text"
+            placeholder="Ex: Angular"
+            [(ngModel)]="tecnologia"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="competencia">Competência</label>
+
+          <input
+            id="competencia"
+            type="text"
+            placeholder="Ex: Desenvolvimento Web"
+            [(ngModel)]="competencia"
+          />
+        </div>
+      </div>
+
+      <div class="filter-actions">
+        <button type="button" class="btn-primary" (click)="carregarProjetos()">
+          <i class="bi bi-search"></i>
+          Buscar
+        </button>
+
+        <button type="button" class="btn-outline" (click)="limparFiltros()">
+          <i class="bi bi-x-circle"></i>
+          Limpar filtros
+        </button>
+      </div>
+    </section>
+
+    @if (mensagemErro) {
+      <div class="alert alert-danger">
+        {{ mensagemErro }}
+      </div>
+    }
+
+    @if (carregando) {
+      <div class="loading-card">
+        <i class="bi bi-hourglass-split"></i>
+        <p>Carregando projetos publicados...</p>
+      </div>
+    } @else {
+      <section class="section-header">
+        <div>
+          <h2>Projetos encontrados</h2>
+          <p>{{ projetos.length }} projeto(s) publicado(s) na vitrine.</p>
+        </div>
+      </section>
+
+      @if (projetos.length === 0) {
+        <div class="empty-state">
+          <i class="bi bi-folder-x"></i>
+
+          <h3>Nenhum projeto publicado encontrado</h3>
+
+          <p>
+            Tente alterar os filtros ou aguarde novos projetos serem publicados pela coordenação.
+          </p>
+        </div>
+      } @else {
+        <div class="projects-grid">
+          @for (projeto of projetos; track projeto.id_projeto) {
+            <article class="project-card">
+              <div class="project-cover">
+                <i class="bi bi-lightbulb"></i>
+              </div>
+
+              <div class="project-body">
+                <div class="project-meta">
+                  <span class="course-badge">
+                    {{ textoCurso(projeto) }}
+                  </span>
+
+                  <span class="date">
+                    Publicado em {{ formatarData(projeto.data_aprovacao) }}
+                  </span>
+                </div>
+
+                <h3>{{ projeto.titulo }}</h3>
+
+                <p>
+                  {{ projeto.descricao }}
+                </p>
+
+                <div class="project-info">
+                  <div>
+                    <span>Turma</span>
+                    <strong>{{ projeto.turma || '-' }}</strong>
+                  </div>
+                </div>
+
+                @if (projeto.slug_publico) {
+                  <a
+                    class="project-link"
+                    [routerLink]="['/vitrine', projeto.slug_publico]"
+                  >
+                    Ver detalhes
+                    <i class="bi bi-arrow-right"></i>
+                  </a>
+                }
+              </div>
+            </article>
+          }
+        </div>
+      }
+    }
+  </main>
+</section>

@@ -13,14 +13,29 @@
       <div class="page-header">
         <div>
           <h2>Meu Portfólio</h2>
-          <p>Veja os projetos aprovados que fazem parte do seu portfólio acadêmico.</p>
+          <p>Escolha quais projetos publicados você quer exibir no seu portfólio público.</p>
         </div>
 
+        @if (portfolio?.slug_publico) {
+          <a
+            class="btn-primary"
+            [routerLink]="['/portfolio', portfolio?.slug_publico]"
+          >
+            <i class="bi bi-box-arrow-up-right"></i>
+            Ver portfólio público
+          </a>
+        }
       </div>
 
       @if (mensagemErro) {
         <div class="alert alert-danger">
           {{ mensagemErro }}
+        </div>
+      }
+
+      @if (mensagemSucesso) {
+        <div class="alert alert-success">
+          {{ mensagemSucesso }}
         </div>
       }
 
@@ -39,7 +54,7 @@
             </h1>
 
             <p>
-              {{ portfolio?.bio || 'Aqui ficam reunidos os Projetos Integradores vinculados ao seu perfil acadêmico.' }}
+              {{ portfolio?.bio || 'Aqui ficam reunidos os Projetos Integradores que você escolheu destacar publicamente.' }}
             </p>
           </div>
 
@@ -55,7 +70,7 @@
             </div>
 
             <div>
-              <span>Projetos</span>
+              <span>No portfólio</span>
               <strong>{{ totalProjetos }}</strong>
             </div>
           </div>
@@ -83,76 +98,154 @@
           </div>
         </div>
 
-        @if (itensPortfolio.length === 0) {
-          <div class="empty-state">
-            <i class="bi bi-person-badge"></i>
-
-            <h3>Nenhum projeto no portfólio</h3>
-
-            <p>
-              Quando um projeto aprovado for adicionado ao seu portfólio, ele aparecerá aqui.
-            </p>
+        <section class="section-card">
+          <div class="section-title">
+            <div>
+              <h3>Projetos no seu portfólio</h3>
+              <p>Estes projetos aparecem no seu portfólio público.</p>
+            </div>
           </div>
-        } @else {
-          <div class="portfolio-grid">
-            @for (item of itensPortfolio; track item.relacao.id_portfolio_projeto) {
-              <article class="portfolio-card">
-                <div class="project-cover">
-                  <i class="bi bi-lightbulb"></i>
-                </div>
 
-                <div class="project-body">
-                  <div class="card-top">
-                    <span class="status {{ classeStatus(item.projeto.status) }}">
-                      {{ formatarStatus(item.projeto.status) }}
-                    </span>
+          @if (itensPortfolio.length === 0) {
+            <div class="empty-state compact">
+              <i class="bi bi-person-badge"></i>
 
-                    @if (ehDestaque(item.relacao)) {
-                      <span class="highlight-badge">
-                        <i class="bi bi-star-fill"></i>
-                        Destaque
+              <h3>Nenhum projeto no portfólio</h3>
+
+              <p>
+                Adicione abaixo os projetos publicados que você quer destacar.
+              </p>
+            </div>
+          } @else {
+            <div class="portfolio-grid">
+              @for (item of itensPortfolio; track item.relacao.id_portfolio_projeto) {
+                <article class="portfolio-card">
+                  <div class="project-cover">
+                    <i class="bi bi-lightbulb"></i>
+                  </div>
+
+                  <div class="project-body">
+                    <div class="card-top">
+                      <span class="status {{ classeStatus(item.projeto.status) }}">
+                        {{ formatarStatus(item.projeto.status) }}
                       </span>
-                    }
-                  </div>
 
-                  <h3>{{ item.projeto.titulo }}</h3>
-
-                  <p>
-                    {{ item.projeto.descricao }}
-                  </p>
-
-                  <div class="project-info">
-                    <div>
-                      <span>Adicionado</span>
-                      <strong>{{ formatarData(item.relacao.data_adicao) }}</strong>
+                      @if (ehDestaque(item.relacao)) {
+                        <span class="highlight-badge">
+                          <i class="bi bi-star-fill"></i>
+                          Destaque
+                        </span>
+                      }
                     </div>
 
-                    <div>
-                      <span>Publicado</span>
-                      <strong>
-                        @if (item.projeto.publicado === 1) {
-                          Sim
+                    <h3>{{ item.projeto.titulo }}</h3>
+
+                    <p>
+                      {{ item.projeto.descricao }}
+                    </p>
+
+                    <div class="project-info">
+                      <div>
+                        <span>Adicionado</span>
+                        <strong>{{ formatarData(item.relacao.data_adicao) }}</strong>
+                      </div>
+
+                      <div>
+                        <span>Publicado</span>
+                        <strong>
+                          @if (item.projeto.publicado === 1) {
+                            Sim
+                          } @else {
+                            Não
+                          }
+                        </strong>
+                      </div>
+                    </div>
+
+                    <div class="card-actions">
+                      <a
+                        class="btn-outline"
+                        [routerLink]="['/aluno/projetos', item.projeto.id_projeto]"
+                      >
+                        <i class="bi bi-eye"></i>
+                        Ver detalhes
+                      </a>
+
+                      <button
+                        type="button"
+                        class="btn-danger"
+                        [disabled]="processandoId === item.projeto.id_projeto"
+                        (click)="removerDoPortfolio(item)"
+                      >
+                        <i class="bi bi-trash"></i>
+
+                        @if (processandoId === item.projeto.id_projeto) {
+                          Removendo...
                         } @else {
-                          Não
+                          Remover
                         }
-                      </strong>
+                      </button>
                     </div>
                   </div>
+                </article>
+              }
+            </div>
+          }
+        </section>
 
-                  <div class="card-actions">
-                    <a
-                      class="btn-outline"
-                      [routerLink]="['/aluno/projetos', item.projeto.id_projeto]"
-                    >
-                      <i class="bi bi-eye"></i>
-                      Ver detalhes
-                    </a>
-                  </div>
-                </div>
-              </article>
-            }
+        <section class="section-card">
+          <div class="section-title">
+            <div>
+              <h3>Projetos disponíveis para adicionar</h3>
+              <p>
+                Aqui aparecem projetos publicados em que você participou e que ainda não estão no seu portfólio.
+              </p>
+            </div>
           </div>
-        }
+
+          @if (projetosDisponiveis.length === 0) {
+            <div class="empty-state compact">
+              <i class="bi bi-check2-circle"></i>
+
+              <h3>Nenhum projeto disponível</h3>
+
+              <p>
+                Todos os seus projetos publicados já estão no portfólio ou ainda não há projetos publicados disponíveis.
+              </p>
+            </div>
+          } @else {
+            <div class="available-list">
+              @for (item of projetosDisponiveis; track item.projeto.id_projeto) {
+                <article class="available-card">
+                  <div>
+                    <span class="status approved">Publicado</span>
+
+                    <h4>{{ item.projeto.titulo }}</h4>
+
+                    <p>{{ item.projeto.descricao }}</p>
+
+                    <small>Função no projeto: {{ item.funcao }}</small>
+                  </div>
+
+                  <button
+                    type="button"
+                    class="btn-primary"
+                    [disabled]="processandoId === item.projeto.id_projeto"
+                    (click)="adicionarAoPortfolio(item)"
+                  >
+                    <i class="bi bi-plus-lg"></i>
+
+                    @if (processandoId === item.projeto.id_projeto) {
+                      Adicionando...
+                    } @else {
+                      Adicionar ao portfólio
+                    }
+                  </button>
+                </article>
+              }
+            </div>
+          }
+        </section>
       }
     </div>
   </main>
