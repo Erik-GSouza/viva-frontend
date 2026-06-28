@@ -75,6 +75,19 @@ O sistema trabalha com quatro perfis principais:
 | Coordenador   | 3      | `/coordenador/dashboard`    |
 | Administrador | 4      | `/administrador/usuarios`   |
 
+## Usuários de teste para navegação
+
+O back-end cria automaticamente alguns dados iniciais para facilitar os testes do sistema.
+
+Use os usuários abaixo para acessar cada área do VIVA:
+
+| Perfil        | Nome           | E-mail                                                              | Senha  | Área inicial                |
+| ------------- | -------------- | ------------------------------------------------------------------- | ------ | --------------------------- |
+| Aluno         | Yuji Itadori   | [yuji.itadori@jujutsu.local](mailto:yuji.itadori@jujutsu.local)     | 123456 | `/aluno/projetos`           |
+| Professor     | Satoru Gojo    | [satoru.gojo@jujutsu.local](mailto:satoru.gojo@jujutsu.local)       | 123456 | `/professor/fila-aprovacao` |
+| Coordenador   | Masamichi Yaga | [masamichi.yaga@jujutsu.local](mailto:masamichi.yaga@jujutsu.local) | 123456 | `/coordenador/dashboard`    |
+| Administrador | Ryomen Sukuna  | [ryomen.sukuna@jujutsu.local](mailto:ryomen.sukuna@jujutsu.local)   | 123456 | `/administrador/usuarios`   |
+
 ## Requisitos para rodar o front-end
 
 Antes de iniciar o projeto, é necessário ter instalado:
@@ -201,9 +214,8 @@ http://127.0.0.1:8000/docs
 Exemplos:
 
 ```txt
-/vitrine/sistema-viva
-/vitrine/projeto-teste-front-end
-/portfolio/aluno-teste
+/vitrine/expansao-de-dominio
+/portfolio/yuji-itadori
 ```
 
 ### Rotas do aluno
