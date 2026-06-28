@@ -30,9 +30,12 @@
 
   <!-- Botão de sair -->
   <div class="sidebar-footer">
-    <a routerLink="/login" class="sidebar-link logout">
+    <button
+      type="button"
+      class="sidebar-link logout logout-button"
+      (click)="sair()"
+    >
       <i class="bi bi-box-arrow-left"></i>
       <span>Sair</span>
-    </a>
+    </button>
   </div>
-</aside>

@@ -1,7 +1,3 @@
-/*
-  Sidebar.
-  será reaproveitada nas telas internas.
-*/
 .sidebar {
   width: 280px;
   min-height: 100vh;
@@ -102,4 +98,13 @@
 .sidebar-link.logout:hover {
   background: #fee2e2;
   color: #991b1b;
+}
+
+.logout-button {
+  width: 100%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
 }

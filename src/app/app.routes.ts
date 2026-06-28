@@ -20,6 +20,7 @@ import { AdministradorCompetencias } from './administrador/competencias/competen
 import { VitrinePublica } from './publico/vitrine-publica/vitrine-publica';
 import { ProjetoPublicoDetalhes } from './publico/projeto-publico-detalhes/projeto-publico-detalhes';
 import { PortfolioPublicoComponent } from './publico/portfolio-publico/portfolio-publico';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -33,67 +34,131 @@ export const routes: Routes = [
   },
   {
     path: 'aluno/projetos',
-    component: AlunoProjetos
+    component: AlunoProjetos,
+    canActivate: [authGuard],
+    data: {
+      perfisPermitidos: [1]
+    }
   },
   {
     path: 'aluno/projetos/:id',
-    component: AlunoProjetoDetalhes
+    component: AlunoProjetoDetalhes,
+    canActivate: [authGuard],
+    data: {
+      perfisPermitidos: [1]
+    }
   },
   {
     path: 'aluno/notificacoes',
-    component: AlunoNotificacoes
+    component: AlunoNotificacoes,
+    canActivate: [authGuard],
+    data: {
+      perfisPermitidos: [1]
+    }
   },
   {
     path: 'aluno/portfolio',
-    component: AlunoPortfolio
+    component: AlunoPortfolio,
+    canActivate: [authGuard],
+    data: {
+      perfisPermitidos: [1]
+    }
   },
   {
     path: 'aluno/submeter-projeto',
-    component: AlunoSubmeterProjeto
+    component: AlunoSubmeterProjeto,
+    canActivate: [authGuard],
+    data: {
+      perfisPermitidos: [1]
+    }
   },
   {
     path: 'professor/fila-aprovacao',
-    component: FilaAprovacao
+    component: FilaAprovacao,
+    canActivate: [authGuard],
+    data: {
+      perfisPermitidos: [2]
+    }
   },
   {
     path: 'professor/projetos/:id',
-    component: ProfessorProjetoDetalhes
+    component: ProfessorProjetoDetalhes,
+    canActivate: [authGuard],
+    data: {
+      perfisPermitidos: [2]
+    }
   },
   {
     path: 'professor/notificacoes',
-    component: ProfessorNotificacoes
+    component: ProfessorNotificacoes,
+    canActivate: [authGuard],
+    data: {
+      perfisPermitidos: [2]
+    }
   },
   {
     path: 'professor/historico-revisoes',
-    component: ProfessorHistoricoRevisoes
+    component: ProfessorHistoricoRevisoes,
+    canActivate: [authGuard],
+    data: {
+      perfisPermitidos: [2]
+    }
   },
   {
     path: 'coordenador/dashboard',
-    component: Dashboard
+    component: Dashboard,
+    canActivate: [authGuard],
+    data: {
+      perfisPermitidos: [3]
+    }
   },
   {
     path: 'coordenador/projetos',
-    component: CoordenadorProjetos
+    component: CoordenadorProjetos,
+    canActivate: [authGuard],
+    data: {
+      perfisPermitidos: [3]
+    }
   },
   {
     path: 'administrador/usuarios',
-    component: AdministradorUsuarios
+    component: AdministradorUsuarios,
+    canActivate: [authGuard],
+    data: {
+      perfisPermitidos: [4]
+    }
   },
   {
     path: 'administrador/cursos',
-    component: AdministradorCursos
+    component: AdministradorCursos,
+    canActivate: [authGuard],
+    data: {
+      perfisPermitidos: [4]
+    }
   },
   {
     path: 'administrador/turmas',
-    component: AdministradorTurmas
+    component: AdministradorTurmas,
+    canActivate: [authGuard],
+    data: {
+      perfisPermitidos: [4]
+    }
   },
   {
     path: 'administrador/tags',
-    component: AdministradorTags
+    component: AdministradorTags,
+    canActivate: [authGuard],
+    data: {
+      perfisPermitidos: [4]
+    }
   },
   {
     path: 'administrador/competencias',
-    component: AdministradorCompetencias
+    component: AdministradorCompetencias,
+    canActivate: [authGuard],
+    data: {
+      perfisPermitidos: [4]
+    }
   },
   {
     path: 'vitrine',
@@ -109,6 +174,6 @@ export const routes: Routes = [
   },  
   {
     path: '**',
-    redirectTo: 'login'
+    redirectTo: 'vitrine'
   }
 ];

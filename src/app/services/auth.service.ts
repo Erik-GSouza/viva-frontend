@@ -8,14 +8,13 @@ export interface LoginRequest {
   senha: string;
 }
 
-
 export interface UsuarioLogado {
   id_usuario: number;
+  id_perfil: number;
+  id_turma?: number | null;
   nome: string;
   email: string;
   status: string;
-  id_perfil?: number;
-  id_turma?: number | null;
   perfil?: string;
   nome_perfil?: string;
 }
@@ -41,10 +40,23 @@ export class AuthService {
       return null;
     }
 
-    return JSON.parse(usuarioSalvo);
+    try {
+      return JSON.parse(usuarioSalvo) as UsuarioLogado;
+    } catch {
+      localStorage.removeItem('usuarioLogado');
+      return null;
+    }
+  }
+
+  removerUsuario(): void {
+    localStorage.removeItem('usuarioLogado');
   }
 
   sair(): void {
-    localStorage.removeItem('usuarioLogado');
+    this.removerUsuario();
+  }
+
+  estaLogado(): boolean {
+    return this.buscarUsuario() !== null;
   }
 }

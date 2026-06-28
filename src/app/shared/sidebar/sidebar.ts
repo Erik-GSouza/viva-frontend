@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+
+import { AuthService } from '../../services/auth.service';
 
 /*
   Tipo simples para os itens do menu
@@ -36,6 +38,27 @@ export class Sidebar {
     <app-sidebar perfil="coordenador"></app-sidebar>
   */
   @Input() perfil: PerfilUsuario = 'aluno';
+
+  /*
+    Chama o AuthService para remover o usuário logado
+    e o Router pra mandar o usuário de volta para o login.
+  */
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) {}
+
+  /*
+    Faz logout do usuário.
+
+    clicar em sair:
+    - remove o usuário salvo no localStorage
+    - redireciona para a tela de login
+  */
+  sair(): void {
+    this.authService.sair();
+    this.router.navigate(['/login']);
+  }
 
   /*
     Retorna os itens do menu de acordo o perfil do usuário.
@@ -76,7 +99,7 @@ export class Sidebar {
           label: 'Projetos',
           icon: 'bi-folder2-open',
           route: '/coordenador/projetos'
-        },
+        }
       ];
     }
 
