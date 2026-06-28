@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 /*
-  Tipo simples para os itens do menu.
+  Tipo simples para os itens do menu
 
   Cada item da sidebar precisa ter:
   - label: texto que aparece na tela
@@ -29,9 +29,9 @@ type PerfilUsuario = 'aluno' | 'professor' | 'coordenador' | 'administrador';
 })
 export class Sidebar {
   /*
-    A página que usa a sidebar informa qual é o perfil
+    A pag que usa a sidebar informa qual é o perfil
 
-    Exemplo:
+    Ex:
     <app-sidebar perfil="aluno"></app-sidebar>
     <app-sidebar perfil="coordenador"></app-sidebar>
   */
@@ -83,12 +83,7 @@ export class Sidebar {
     if (this.perfil === 'administrador') {
       return [
         {
-          label: 'Painel Admin',
-          icon: 'bi-speedometer2',
-          route: '/administrador/dashboard'
-        },
-        {
-          label: 'Gestão de Usuários',
+          label: 'Usuários',
           icon: 'bi-people',
           route: '/administrador/usuarios'
         },
@@ -103,7 +98,7 @@ export class Sidebar {
           route: '/administrador/turmas'
         },
         {
-          label: 'Tags e Tecnologias',
+          label: 'Tags',
           icon: 'bi-tags',
           route: '/administrador/tags'
         },
@@ -111,11 +106,6 @@ export class Sidebar {
           label: 'Competências',
           icon: 'bi-award',
           route: '/administrador/competencias'
-        },
-        {
-          label: 'Notificações',
-          icon: 'bi-bell',
-          route: '/administrador/notificacoes'
         }
       ];
     }

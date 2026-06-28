@@ -1,0 +1,299 @@
+<section class="admin-page">
+  <app-sidebar perfil="administrador"></app-sidebar>
+
+  <main class="page-content">
+    <app-topbar
+      titulo="Gestão de Turmas"
+      [nomeUsuario]="usuarioLogado?.nome || 'Administrador'"
+      perfil="Administrador"
+      perfilTipo="administrador"
+    ></app-topbar>
+
+    <div class="content-area">
+      <div class="page-header">
+        <div>
+          <h2>Turmas</h2>
+          <p>Cadastre e acompanhe as turmas vinculadas aos cursos.</p>
+        </div>
+
+        <button type="button" class="btn-refresh" (click)="carregarDados()">
+          <i class="bi bi-arrow-clockwise"></i>
+          Atualizar
+        </button>
+      </div>
+
+      @if (mensagemErro) {
+        <div class="alert alert-danger">
+          {{ mensagemErro }}
+        </div>
+      }
+
+      @if (mensagemSucesso) {
+        <div class="alert alert-success">
+          {{ mensagemSucesso }}
+        </div>
+      }
+
+      @if (carregando) {
+        <div class="loading-card">
+          <i class="bi bi-hourglass-split"></i>
+          <p>Carregando turmas...</p>
+        </div>
+      } @else {
+        <div class="stats-grid">
+          <article class="stat-card">
+            <div class="stat-icon primary">
+              <i class="bi bi-collection"></i>
+            </div>
+
+            <div>
+              <span>Total</span>
+              <strong>{{ totalTurmas }}</strong>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon success">
+              <i class="bi bi-check-circle"></i>
+            </div>
+
+            <div>
+              <span>Ativas</span>
+              <strong>{{ totalAtivas }}</strong>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon warning">
+              <i class="bi bi-pause-circle"></i>
+            </div>
+
+            <div>
+              <span>Inativas</span>
+              <strong>{{ totalInativas }}</strong>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon info">
+              <i class="bi bi-journal-bookmark"></i>
+            </div>
+
+            <div>
+              <span>Cursos com turmas</span>
+              <strong>{{ totalCursosComTurmas }}</strong>
+            </div>
+          </article>
+        </div>
+
+        <section class="form-card">
+          <h3>Cadastrar nova turma</h3>
+
+          <form (ngSubmit)="criarTurma()">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="curso">Curso</label>
+
+                <select
+                  id="curso"
+                  name="curso"
+                  [(ngModel)]="novaTurma.id_curso"
+                >
+                  <option [ngValue]="null">Selecione um curso</option>
+
+                  @for (curso of cursosAtivos; track curso.id_curso) {
+                    <option [ngValue]="curso.id_curso">
+                      {{ curso.sigla }} - {{ curso.nome }}
+                    </option>
+                  }
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="nome">Nome da turma</label>
+
+                <input
+                  id="nome"
+                  name="nome"
+                  type="text"
+                  [(ngModel)]="novaTurma.nome"
+                  placeholder="Ex: ADS 2º Período"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="semestre">Semestre</label>
+
+                <input
+                  id="semestre"
+                  name="semestre"
+                  type="text"
+                  [(ngModel)]="novaTurma.semestre"
+                  placeholder="Ex: 2º Período"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="ano">Ano</label>
+
+                <input
+                  id="ano"
+                  name="ano"
+                  type="number"
+                  [(ngModel)]="novaTurma.ano"
+                  placeholder="Ex: 2026"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="turno">Turno</label>
+
+                <select
+                  id="turno"
+                  name="turno"
+                  [(ngModel)]="novaTurma.turno"
+                >
+                  <option value="Manhã">Manhã</option>
+                  <option value="Tarde">Tarde</option>
+                  <option value="Noite">Noite</option>
+                  <option value="Integral">Integral</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="status">Status</label>
+
+                <select
+                  id="status"
+                  name="status"
+                  [(ngModel)]="novaTurma.status"
+                >
+                  <option value="ativo">Ativo</option>
+                  <option value="inativo">Inativo</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary" [disabled]="salvando">
+                <i class="bi bi-plus-lg"></i>
+
+                @if (salvando) {
+                  Salvando...
+                } @else {
+                  Cadastrar turma
+                }
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <section class="list-card">
+          <div class="list-header">
+            <div>
+              <h3>Turmas cadastradas</h3>
+              <p>Lista de turmas registradas na plataforma.</p>
+            </div>
+          </div>
+
+          <div class="filters-row">
+            <div class="search-box">
+              <i class="bi bi-search"></i>
+
+              <input
+                type="text"
+                placeholder="Buscar por turma, curso, semestre, ano ou turno..."
+                [(ngModel)]="termoBusca"
+              />
+            </div>
+
+            <select [(ngModel)]="filtroCurso">
+              <option [ngValue]="'todos'">Todos os cursos</option>
+
+              @for (curso of cursos; track curso.id_curso) {
+                <option [ngValue]="curso.id_curso">
+                  {{ curso.sigla }}
+                </option>
+              }
+            </select>
+
+            <select [(ngModel)]="filtroStatus">
+              <option value="todos">Todos os status</option>
+              <option value="ativo">Ativas</option>
+              <option value="inativo">Inativas</option>
+            </select>
+          </div>
+
+          @if (turmasFiltradas.length === 0) {
+            <div class="empty-state">
+              <i class="bi bi-collection"></i>
+
+              <h3>Nenhuma turma encontrada</h3>
+
+              <p>Tente alterar os filtros ou cadastrar uma nova turma.</p>
+            </div>
+          } @else {
+            <div class="cards-grid">
+              @for (turma of turmasFiltradas; track turma.id_turma) {
+                <article class="class-card">
+                  <div class="class-header">
+                    <div class="class-icon">
+                      {{ siglaCurso(turma.id_curso).charAt(0) }}
+                    </div>
+
+                    <div>
+                      <h4>{{ turma.nome }}</h4>
+
+                      <span class="status-badge {{ classeStatus(turma.status) }}">
+                        {{ turma.status }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="class-info">
+                    <div>
+                      <span>Curso</span>
+                      <strong>{{ nomeCurso(turma.id_curso) }}</strong>
+                    </div>
+
+                    <div>
+                      <span>Semestre</span>
+                      <strong>{{ turma.semestre }}</strong>
+                    </div>
+
+                    <div>
+                      <span>Ano</span>
+                      <strong>{{ turma.ano }}</strong>
+                    </div>
+
+                    <div>
+                      <span>Turno</span>
+                      <strong>{{ turma.turno }}</strong>
+                    </div>
+                  </div>
+
+                  <div class="card-actions">
+                    <button
+                      type="button"
+                      class="btn-action"
+                      [disabled]="processandoId === turma.id_turma"
+                      (click)="alterarStatus(turma)"
+                    >
+                      @if (turma.status === 'ativo') {
+                        <i class="bi bi-pause-circle"></i>
+                        Inativar
+                      } @else {
+                        <i class="bi bi-check-circle"></i>
+                        Ativar
+                      }
+                    </button>
+                  </div>
+                </article>
+              }
+            </div>
+          }
+        </section>
+      }
+    </div>
+  </main>
+</section>

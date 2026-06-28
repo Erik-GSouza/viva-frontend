@@ -12,6 +12,11 @@ import { AlunoProjetoDetalhes } from './aluno/projeto-detalhes/projeto-detalhes'
 import { AlunoNotificacoes } from './aluno/notificacoes/notificacoes';
 import { AlunoPortfolio } from './aluno/portfolio/portfolio';
 import { AlunoSubmeterProjeto } from './aluno/submeter-projeto/submeter-projeto';
+import { AdministradorUsuarios } from './administrador/usuarios/usuarios';
+import { AdministradorCursos } from './administrador/cursos/cursos';
+import { AdministradorTurmas } from './administrador/turmas/turmas';
+import { AdministradorTags } from './administrador/tags/tags';
+import { AdministradorCompetencias } from './administrador/competencias/competencias';
 import { VitrinePublica } from './publico/vitrine-publica/vitrine-publica';
 import { ProjetoPublicoDetalhes } from './publico/projeto-publico-detalhes/projeto-publico-detalhes';
 import { PortfolioPublicoComponent } from './publico/portfolio-publico/portfolio-publico';
@@ -69,6 +74,26 @@ export const routes: Routes = [
   {
     path: 'coordenador/projetos',
     component: CoordenadorProjetos
+  },
+  {
+    path: 'administrador/usuarios',
+    component: AdministradorUsuarios
+  },
+  {
+    path: 'administrador/cursos',
+    component: AdministradorCursos
+  },
+  {
+    path: 'administrador/turmas',
+    component: AdministradorTurmas
+  },
+  {
+    path: 'administrador/tags',
+    component: AdministradorTags
+  },
+  {
+    path: 'administrador/competencias',
+    component: AdministradorCompetencias
   },
   {
     path: 'vitrine',

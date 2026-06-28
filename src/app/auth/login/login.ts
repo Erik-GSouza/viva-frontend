@@ -8,10 +8,10 @@ import { AuthService, UsuarioLogado } from '../../services/auth.service';
   selector: 'app-login',
 
   /*
-    FormsModule é necessário porque usamos [(ngModel)] no HTML
+    FormsModule é necessário pq usa [(ngModel)] no HTML
 
     O [(ngModel)] é o que faz o input do HTML conversar com as variáveis
-    aqui do TypeScript, como email e senha.
+    do TypeScript, como email e senha.
   */
   imports: [FormsModule],
 
@@ -21,39 +21,39 @@ import { AuthService, UsuarioLogado } from '../../services/auth.service';
 export class Login {
   /*
     Essas duas variáveis guardam o que o usuário digita nos campos
-    de e-mail e senha da tela de login.
+    de email e senha da tela de login.
   */
   email = '';
   senha = '';
 
   /*
-    Essa variável serve para controlar o botão enquanto o login está acontecendo.
+    Essa variável serve para controlar o botão enquanto o login está acontecendo
 
-    Exemplo:
+    Ex:
     - carregando = true  → mostra "Entrando..."
     - carregando = false → mostra "Entrar"
   */
   carregando = false;
 
   /*
-    Essa variável guarda uma mensagem de erro para mostrar na tela.
+    Essa variável guarda uma mensagem de erro para mostrar na tela
 
-    Exemplo:
-    "E-mail ou senha inválidos."
+    Ex:
+    "Email ou senha inválidos."
   */
   mensagemErro = '';
 
   constructor(
     /*
-      O Router serve para mandar o usuário para outra página depois do login.
+      O Router serve para mandar o usuário para outra página depois do login
 
-      Exemplo:
-      se for aluno, mandar para /aluno/meus-projetos
+      Ex:
+      se for aluno, manda para /aluno/projetos
     */
     private router: Router,
 
     /*
-      O AuthService é o service que conversa com o back-end na parte de login.
+      O AuthService conversa com o back na parte de login
 
       Ele chama o endpoint:
       POST /api/v1/login
@@ -62,24 +62,24 @@ export class Login {
   ) {}
 
   /*
-    Essa função é chamada quando o usuário clica no botão "Entrar".
+    função chamada quando o user clica no botão "Entrar".
 
-    Ela faz 4 coisas principais:
-    1. Verifica se o e-mail e a senha foram preenchidos.
-    2. Envia esses dados para o back-end.
-    3. Salva o usuário logado no localStorage.
-    4. Redireciona o usuário conforme o perfil dele.
+    faz 4 coisas principais:
+    1. Verifica se o email e a senha foram preenchidos
+    2. Envia esses dados para o back
+    3. Salva o usuário logado no localStorage
+    4. Redireciona o usuário conforme o perfil dele
   */
   entrar() {
     /*
-      Sempre que tentar entrar, limpamos a mensagem de erro anterior.
-      Assim a tela não fica mostrando erro antigo.
+      Sempre que tentar entrar, limpa a mensagem de erro anterior
+      Assim a tela não fica mostrando erro antigo
     */
     this.mensagemErro = '';
 
     /*
       Validação simples:
-      se o usuário não digitou e-mail ou senha, nem chamamos o back-end.
+      se o usuário não digitou email ou senha, nem chama o back
     */
     if (!this.email || !this.senha) {
       this.mensagemErro = 'Informe o e-mail e a senha.';
@@ -87,14 +87,14 @@ export class Login {
     }
 
     /*
-      Aqui avisamos para a tela que o login começou.
-      Isso ajuda a mudar o texto do botão para "Entrando..."
-      e evitar vários cliques seguidos.
+      Aqui avisa para a tela que o login começou.
+      ajuda a mudar o texto do botão para "Entrando..."
+      ai evita vários cliques seguidos
     */
     this.carregando = true;
 
     /*
-      Aqui chamamos o back-end na lata.
+      Aqui chama o back na lata
 
       O Angular envia:
       {
@@ -110,10 +110,10 @@ export class Login {
       senha: this.senha
     }).subscribe({
       /*
-        O next acontece quando o back-end responde com sucesso.
+        O next acontece quando o back responde com sucesso
 
-        Ou seja:
-        o e-mail e a senha estavam corretos.
+        basicamente:
+        o email e a senha estavam corretos.
       */
       next: (usuario) => {
         console.log('Resposta do login:', usuario);
@@ -121,9 +121,9 @@ export class Login {
         this.carregando = false;
 
         /*
-          Salvamos o usuário logado no navegador.
+          Salva o usuário logado no navegador.
 
-          Isso é útil porque outras telas podem precisar saber:
+          as outras telas podem precisam saber:
           - quem está logado
           - qual é o perfil
           - qual é o id do usuário
@@ -131,13 +131,13 @@ export class Login {
         this.authService.salvarUsuario(usuario);
 
         /*
-          Aqui descobrimos se o usuário é:
-          aluno, professor, coordenador ou administrador
+          descobrir se o usuário é:
+          aluno, professor, coordenador ou admin
         */
         const perfil = this.identificarPerfil(usuario);
 
         /*
-          Depois de descobrir o perfil, mandamos cada tipo de usuário
+          Depois de descobrir o perfil, manda cada tipo de usuário
           para a tela inicial correta
         */
         if (perfil === 'aluno') {
@@ -156,25 +156,25 @@ export class Login {
         }
 
         if (perfil === 'administrador') {
-          this.router.navigate(['/administrador/dashboard']);
+          this.router.navigate(['/administrador/usuarios']);
           return;
         }
 
         /*
-          Se chegou ate aqui, significa que o login funcionou,
-          mas o perfil veio em um formato que o front-end não reconheceu
+          Se chegoar ate aqui significa que o login funcionou,
+          mas o perfil veio em um formato que o front não reconheceu
         */
         this.mensagemErro = 'Perfil do usuário não reconhecido.';
       },
 
       /*
-        O error acontece quando o back-end responde com erro
+        O error acontece quando o back responde com erro
 
-        Exemplo:
-        - e-mail errado
+        Ex:
+        - email errado
         - senha errada
         - usuário inativo
-        - back-end fora do ar
+        - back fora do ar
       */
       error: (erro) => {
         console.log('Erro ao tentar fazer login:', erro);
@@ -186,22 +186,22 @@ export class Login {
   }
 
   /*
-    Essa função tenta descobrir o perfil do usuario.
+    Essa função tenta descobrir o perfil do user.
 
-    Fizemos ela de um jeito mais flexivel porque o back-end pode retornar
-    o perfil de formas diferentes, por exemplo:
+    ela foi feita  mais flexivel porque o back pode retornar
+    o perfil de formas diferentes, ex:
 
     perfil: "Aluno"
     nome_perfil: "Aluno"
     id_perfil: 1
 
-    Assim o front-end fica mais resistente e não quebra tão fácil.
+    Ai o front fica mais resistente e não quebra fácil
   */
   private identificarPerfil(usuario: UsuarioLogado): string {
     /*
-      Primeiro tentamos pegar o perfil em formato de texto
+      Primeiro tenta pegar o perfil em formato de texto
 
-      Exemplo:
+      Ex:
       "Aluno"
       "Professor"
       "Coordenador"
@@ -211,13 +211,13 @@ export class Login {
 
     if (perfilTexto) {
       /*
-        Aqui deixamos o texto padronizado
+        Aqui deixa o texto padronizado
 
-        Exemplo:
+        Ex:
         "Administrador" vira "administrador"
         "Coordenador" vira "coordenador"
 
-        Tambem removemos acentos, caso apareça algum.
+        tambem removemos acentos, caso apareça algum.
       */
       return perfilTexto
         .toLowerCase()
@@ -226,7 +226,7 @@ export class Login {
     }
 
     /*
-      Se o perfil não veio como texto, tentamos identificar pelo id_perfil
+      Se o perfil não veio como texto, tenta identificar pelo id_perfil
 
       No nosso banco:
       1 = Aluno

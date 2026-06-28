@@ -1,0 +1,334 @@
+<section class="admin-page">
+  <app-sidebar perfil="administrador"></app-sidebar>
+
+  <main class="page-content">
+    <app-topbar
+      titulo="Gestão de Usuários"
+      [nomeUsuario]="usuarioLogado?.nome || 'Administrador'"
+      perfil="Administrador"
+      perfilTipo="administrador"
+    ></app-topbar>
+
+    <div class="content-area">
+      <div class="page-header">
+        <div>
+          <h2>Usuários</h2>
+          <p>Cadastre e acompanhe usuários da plataforma VIVA.</p>
+        </div>
+
+        <button type="button" class="btn-refresh" (click)="carregarDados()">
+          <i class="bi bi-arrow-clockwise"></i>
+          Atualizar
+        </button>
+      </div>
+
+      @if (mensagemErro) {
+        <div class="alert alert-danger">
+          {{ mensagemErro }}
+        </div>
+      }
+
+      @if (mensagemSucesso) {
+        <div class="alert alert-success">
+          {{ mensagemSucesso }}
+        </div>
+      }
+
+      @if (carregando) {
+        <div class="loading-card">
+          <i class="bi bi-hourglass-split"></i>
+          <p>Carregando usuários...</p>
+        </div>
+      } @else {
+        <div class="stats-grid">
+          <article class="stat-card">
+            <div class="stat-icon primary">
+              <i class="bi bi-people"></i>
+            </div>
+
+            <div>
+              <span>Total</span>
+              <strong>{{ totalUsuarios }}</strong>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon success">
+              <i class="bi bi-check-circle"></i>
+            </div>
+
+            <div>
+              <span>Ativos</span>
+              <strong>{{ totalAtivos }}</strong>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon info">
+              <i class="bi bi-mortarboard"></i>
+            </div>
+
+            <div>
+              <span>Alunos</span>
+              <strong>{{ totalAlunos }}</strong>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon warning">
+              <i class="bi bi-person-workspace"></i>
+            </div>
+
+            <div>
+              <span>Professores</span>
+              <strong>{{ totalProfessores }}</strong>
+            </div>
+          </article>
+        </div>
+
+        <section class="form-card">
+          <h3>Cadastrar novo usuário</h3>
+
+          <form (ngSubmit)="criarUsuario()">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="perfil">Perfil</label>
+
+                <select
+                  id="perfil"
+                  name="perfil"
+                  [(ngModel)]="novoUsuario.id_perfil"
+                >
+                  @for (perfil of perfis; track perfil.id_perfil) {
+                    <option [ngValue]="perfil.id_perfil">
+                      {{ perfil.nome }}
+                    </option>
+                  }
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="nome">Nome</label>
+
+                <input
+                  id="nome"
+                  name="nome"
+                  type="text"
+                  [(ngModel)]="novoUsuario.nome"
+                  placeholder="Nome completo"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="email">E-mail</label>
+
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  [(ngModel)]="novoUsuario.email"
+                  placeholder="usuario@senac.com"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="senha">Senha inicial</label>
+
+                <input
+                  id="senha"
+                  name="senha"
+                  type="text"
+                  [(ngModel)]="novoUsuario.senha_hash"
+                  placeholder="Ex: 123456"
+                />
+              </div>
+
+              @if (novoUsuario.id_perfil === 1) {
+                <div class="form-group">
+                  <label for="turma">Turma</label>
+
+                  <select
+                    id="turma"
+                    name="turma"
+                    [(ngModel)]="novoUsuario.id_turma"
+                  >
+                    <option [ngValue]="null">Sem turma</option>
+
+                    @for (turma of turmas; track turma.id_turma) {
+                      <option [ngValue]="turma.id_turma">
+                        {{ turma.nome }} - {{ turma.semestre }}/{{ turma.ano }}
+                      </option>
+                    }
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="matricula">Matrícula</label>
+
+                  <input
+                    id="matricula"
+                    name="matricula"
+                    type="text"
+                    [(ngModel)]="novoUsuario.matricula"
+                    placeholder="Ex: 2026002"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="tipoAluno">Tipo de aluno</label>
+
+                  <select
+                    id="tipoAluno"
+                    name="tipoAluno"
+                    [(ngModel)]="novoUsuario.tipo_aluno"
+                  >
+                    <option value="regular">Regular</option>
+                    <option value="egresso">Egresso</option>
+                  </select>
+                </div>
+              } @else {
+                <div class="form-group">
+                  <label for="departamento">Departamento</label>
+
+                  <input
+                    id="departamento"
+                    name="departamento"
+                    type="text"
+                    [(ngModel)]="novoUsuario.departamento"
+                    placeholder="Ex: Coordenação Acadêmica"
+                  />
+                </div>
+              }
+
+              <div class="form-group">
+                <label for="telefone">Telefone</label>
+
+                <input
+                  id="telefone"
+                  name="telefone"
+                  type="text"
+                  [(ngModel)]="novoUsuario.telefone"
+                  placeholder="Ex: 81999999999"
+                />
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary" [disabled]="salvando">
+                <i class="bi bi-plus-lg"></i>
+
+                @if (salvando) {
+                  Salvando...
+                } @else {
+                  Cadastrar usuário
+                }
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <section class="list-card">
+          <div class="list-header">
+            <div>
+              <h3>Usuários cadastrados</h3>
+              <p>Lista de usuários registrados no sistema.</p>
+            </div>
+          </div>
+
+          <div class="filters-row">
+            <div class="search-box">
+              <i class="bi bi-search"></i>
+
+              <input
+                type="text"
+                placeholder="Buscar por nome, e-mail ou perfil..."
+                [(ngModel)]="termoBusca"
+              />
+            </div>
+
+            <select [(ngModel)]="filtroPerfil">
+              <option [ngValue]="'todos'">Todos os perfis</option>
+
+              @for (perfil of perfis; track perfil.id_perfil) {
+                <option [ngValue]="perfil.id_perfil">
+                  {{ perfil.nome }}
+                </option>
+              }
+            </select>
+
+            <select [(ngModel)]="filtroStatus">
+              <option value="todos">Todos os status</option>
+              <option value="ativo">Ativos</option>
+              <option value="inativo">Inativos</option>
+            </select>
+          </div>
+
+          @if (usuariosFiltrados.length === 0) {
+            <div class="empty-state">
+              <i class="bi bi-person-x"></i>
+
+              <h3>Nenhum usuário encontrado</h3>
+
+              <p>Tente alterar os filtros ou cadastrar um novo usuário.</p>
+            </div>
+          } @else {
+            <div class="table-responsive">
+              <table class="users-table">
+                <thead>
+                  <tr>
+                    <th>Usuário</th>
+                    <th>Perfil</th>
+                    <th>Turma</th>
+                    <th>Departamento</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  @for (usuario of usuariosFiltrados; track usuario.id_usuario) {
+                    <tr>
+                      <td>
+                        <strong>{{ usuario.nome }}</strong>
+                        <span>{{ usuario.email }}</span>
+                      </td>
+
+                      <td>{{ nomePerfil(usuario.id_perfil) }}</td>
+
+                      <td>{{ nomeTurma(usuario.id_turma) }}</td>
+
+                      <td>{{ usuario.departamento || '-' }}</td>
+
+                      <td>
+                        <span class="status-badge {{ classeStatus(usuario.status) }}">
+                          {{ usuario.status }}
+                        </span>
+                      </td>
+
+                      <td>
+                        <button
+                          type="button"
+                          class="btn-action"
+                          [disabled]="processandoId === usuario.id_usuario"
+                          (click)="alterarStatus(usuario)"
+                        >
+                          @if (usuario.status === 'ativo') {
+                            <i class="bi bi-pause-circle"></i>
+                            Inativar
+                          } @else {
+                            <i class="bi bi-check-circle"></i>
+                            Ativar
+                          }
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          }
+        </section>
+      }
+    </div>
+  </main>
+</section>

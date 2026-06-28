@@ -1,0 +1,304 @@
+<section class="admin-page">
+  <app-sidebar perfil="administrador"></app-sidebar>
+
+  <main class="page-content">
+    <app-topbar
+      titulo="Gestão de Tags"
+      [nomeUsuario]="usuarioLogado?.nome || 'Administrador'"
+      perfil="Administrador"
+      perfilTipo="administrador"
+    ></app-topbar>
+
+    <div class="content-area">
+      <div class="page-header">
+        <div>
+          <h2>Tags e Tecnologias</h2>
+          <p>Cadastre tecnologias, ferramentas, linguagens e metodologias usadas nos projetos.</p>
+        </div>
+
+        <button type="button" class="btn-refresh" (click)="carregarTags()">
+          <i class="bi bi-arrow-clockwise"></i>
+          Atualizar
+        </button>
+      </div>
+
+      @if (mensagemErro) {
+        <div class="alert alert-danger">
+          {{ mensagemErro }}
+        </div>
+      }
+
+      @if (mensagemSucesso) {
+        <div class="alert alert-success">
+          {{ mensagemSucesso }}
+        </div>
+      }
+
+      @if (carregando) {
+        <div class="loading-card">
+          <i class="bi bi-hourglass-split"></i>
+          <p>Carregando tags...</p>
+        </div>
+      } @else {
+        <div class="stats-grid">
+          <article class="stat-card">
+            <div class="stat-icon primary">
+              <i class="bi bi-tags"></i>
+            </div>
+
+            <div>
+              <span>Total</span>
+              <strong>{{ totalTags }}</strong>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon success">
+              <i class="bi bi-check-circle"></i>
+            </div>
+
+            <div>
+              <span>Ativas</span>
+              <strong>{{ totalAtivas }}</strong>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon warning">
+              <i class="bi bi-archive"></i>
+            </div>
+
+            <div>
+              <span>Arquivadas</span>
+              <strong>{{ totalArquivadas }}</strong>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon info">
+              <i class="bi bi-diagram-3"></i>
+            </div>
+
+            <div>
+              <span>Categorias</span>
+              <strong>{{ totalCategorias }}</strong>
+            </div>
+          </article>
+        </div>
+
+        <section class="form-card">
+          <div class="form-title">
+            <div>
+              <h3>
+                @if (tagEditando) {
+                  Editar tag
+                } @else {
+                  Cadastrar nova tag
+                }
+              </h3>
+
+              @if (tagEditando) {
+                <p>Editando: {{ tagEditando.nome }}</p>
+              } @else {
+                <p>Adicione uma tecnologia para ser usada nos projetos.</p>
+              }
+            </div>
+
+            @if (tagEditando) {
+              <button type="button" class="btn-light" (click)="cancelarEdicao()">
+                <i class="bi bi-x-lg"></i>
+                Cancelar edição
+              </button>
+            }
+          </div>
+
+          <form (ngSubmit)="salvarTag()">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="nome">Nome</label>
+
+                <input
+                  id="nome"
+                  name="nome"
+                  type="text"
+                  [(ngModel)]="formulario.nome"
+                  placeholder="Ex: Angular"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="categoria">Categoria</label>
+
+                <select
+                  id="categoria"
+                  name="categoria"
+                  [(ngModel)]="formulario.categoria"
+                >
+                  @for (categoria of categoriasDisponiveis; track categoria) {
+                    <option [value]="categoria">
+                      {{ categoria }}
+                    </option>
+                  }
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="cor">Cor</label>
+
+                <input
+                  id="cor"
+                  name="cor"
+                  type="color"
+                  [(ngModel)]="formulario.cor"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="status">Status</label>
+
+                <select
+                  id="status"
+                  name="status"
+                  [(ngModel)]="formulario.status"
+                >
+                  <option value="ativo">Ativo</option>
+                  <option value="arquivado">Arquivado</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary" [disabled]="salvando">
+                @if (tagEditando) {
+                  <i class="bi bi-check-lg"></i>
+
+                  @if (salvando) {
+                    Salvando...
+                  } @else {
+                    Salvar alterações
+                  }
+                } @else {
+                  <i class="bi bi-plus-lg"></i>
+
+                  @if (salvando) {
+                    Salvando...
+                  } @else {
+                    Cadastrar tag
+                  }
+                }
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <section class="list-card">
+          <div class="list-header">
+            <div>
+              <h3>Tags cadastradas</h3>
+              <p>Lista de tecnologias disponíveis para os projetos.</p>
+            </div>
+          </div>
+
+          <div class="filters-row">
+            <div class="search-box">
+              <i class="bi bi-search"></i>
+
+              <input
+                type="text"
+                placeholder="Buscar por nome, categoria ou status..."
+                [(ngModel)]="termoBusca"
+              />
+            </div>
+
+            <select [(ngModel)]="filtroCategoria">
+              <option [ngValue]="'todas'">Todas as categorias</option>
+
+              @for (categoria of categoriasDisponiveis; track categoria) {
+                <option [ngValue]="categoria">
+                  {{ categoria }}
+                </option>
+              }
+            </select>
+
+            <select [(ngModel)]="filtroStatus">
+              <option value="todos">Todos os status</option>
+              <option value="ativo">Ativas</option>
+              <option value="arquivado">Arquivadas</option>
+            </select>
+          </div>
+
+          @if (tagsFiltradas.length === 0) {
+            <div class="empty-state">
+              <i class="bi bi-tags"></i>
+
+              <h3>Nenhuma tag encontrada</h3>
+
+              <p>Tente alterar os filtros ou cadastrar uma nova tag.</p>
+            </div>
+          } @else {
+            <div class="cards-grid">
+              @for (tag of tagsFiltradas; track tag.id_tag) {
+                <article class="tag-card">
+                  <div class="tag-header">
+                    <div
+                      class="tag-color"
+                      [style.background]="tag.cor || '#0f4c81'"
+                    >
+                      <i class="bi bi-tag"></i>
+                    </div>
+
+                    <div>
+                      <h4>{{ tag.nome }}</h4>
+
+                      <span class="status-badge {{ classeStatus(tag.status) }}">
+                        {{ tag.status }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="tag-info">
+                    <div>
+                      <span>Categoria</span>
+                      <strong>{{ tag.categoria }}</strong>
+                    </div>
+
+                    <div>
+                      <span>Cadastrada em</span>
+                      <strong>{{ formatarData(tag.data_criacao) }}</strong>
+                    </div>
+                  </div>
+
+                  <div class="card-actions">
+                    <button
+                      type="button"
+                      class="btn-action"
+                      (click)="iniciarEdicao(tag)"
+                    >
+                      <i class="bi bi-pencil"></i>
+                      Editar
+                    </button>
+
+                    <button
+                      type="button"
+                      class="btn-action"
+                      [disabled]="processandoId === tag.id_tag"
+                      (click)="alterarArquivamento(tag)"
+                    >
+                      @if (tag.status === 'arquivado') {
+                        <i class="bi bi-check-circle"></i>
+                        Reativar
+                      } @else {
+                        <i class="bi bi-archive"></i>
+                        Arquivar
+                      }
+                    </button>
+                  </div>
+                </article>
+              }
+            </div>
+          }
+        </section>
+      }
+    </div>
+  </main>
+</section>

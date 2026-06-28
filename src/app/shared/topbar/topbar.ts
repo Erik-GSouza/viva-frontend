@@ -5,7 +5,7 @@ import { RouterLink } from '@angular/router';
   Tipo usado para limitar os perfis
   evita escrever perfis errados
 */
-type PerfilTipo = 'aluno' | 'professor' | 'coordenador';
+type PerfilTipo = 'aluno' | 'professor' | 'coordenador' | 'administrador';
 
 /*
   Topbar
@@ -19,7 +19,7 @@ type PerfilTipo = 'aluno' | 'professor' | 'coordenador';
 export class Topbar {
   /*
     Título da página atual
-    Exemplo: Vitrine, Dashboard, Gestão de Usuários
+    Ex: Vitrine, Dashboard, Gestão de Usuários
   */
   @Input() titulo = 'Página';
 
@@ -31,13 +31,13 @@ export class Topbar {
 
   /*
     Texto visual do perfil
-    Exemplo: Aluno, Professor ou Coordenador
+    Ex: Aluno, professor etc
   */
   @Input() perfil = 'Aluno';
 
   /*
     Tipo real do perfil
-    para montar os links corretos
+    pra montar os links corretos
   */
   @Input() perfilTipo: PerfilTipo = 'aluno';
 
@@ -54,21 +54,21 @@ export class Topbar {
   }
 
   /*
-    Rota da página de notificações dependendo do perfil
+    Rota da pag de notificações dependendo do perfil
   */
   get notificacoesRoute() {
     return `/${this.perfilTipo}/notificacoes`;
   }
 
   /*
-    Rota da página de perfil dependendo do perfil
+    Rota da pag de perfil dependendo do perfil
   */
   get perfilRoute() {
     return `/${this.perfilTipo}/perfil`;
   }
 
   /*
-    Rota da página de configurações dependendo do perfil
+    Rota da pag de configurações dependendo do perfil
   */
   get configuracoesRoute() {
     return `/${this.perfilTipo}/configuracoes`;

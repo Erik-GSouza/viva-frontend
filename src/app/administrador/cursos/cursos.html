@@ -1,0 +1,228 @@
+<section class="admin-page">
+  <app-sidebar perfil="administrador"></app-sidebar>
+
+  <main class="page-content">
+    <app-topbar
+      titulo="Gestão de Cursos"
+      [nomeUsuario]="usuarioLogado?.nome || 'Administrador'"
+      perfil="Administrador"
+      perfilTipo="administrador"
+    ></app-topbar>
+
+    <div class="content-area">
+      <div class="page-header">
+        <div>
+          <h2>Cursos</h2>
+          <p>Cadastre e acompanhe os cursos disponíveis no sistema VIVA.</p>
+        </div>
+
+        <button type="button" class="btn-refresh" (click)="carregarCursos()">
+          <i class="bi bi-arrow-clockwise"></i>
+          Atualizar
+        </button>
+      </div>
+
+      @if (mensagemErro) {
+        <div class="alert alert-danger">
+          {{ mensagemErro }}
+        </div>
+      }
+
+      @if (mensagemSucesso) {
+        <div class="alert alert-success">
+          {{ mensagemSucesso }}
+        </div>
+      }
+
+      @if (carregando) {
+        <div class="loading-card">
+          <i class="bi bi-hourglass-split"></i>
+          <p>Carregando cursos...</p>
+        </div>
+      } @else {
+        <div class="stats-grid">
+          <article class="stat-card">
+            <div class="stat-icon primary">
+              <i class="bi bi-journal-bookmark"></i>
+            </div>
+
+            <div>
+              <span>Total</span>
+              <strong>{{ totalCursos }}</strong>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon success">
+              <i class="bi bi-check-circle"></i>
+            </div>
+
+            <div>
+              <span>Ativos</span>
+              <strong>{{ totalAtivos }}</strong>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon warning">
+              <i class="bi bi-pause-circle"></i>
+            </div>
+
+            <div>
+              <span>Inativos</span>
+              <strong>{{ totalInativos }}</strong>
+            </div>
+          </article>
+        </div>
+
+        <section class="form-card">
+          <h3>Cadastrar novo curso</h3>
+
+          <form (ngSubmit)="criarCurso()">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="nome">Nome do curso</label>
+
+                <input
+                  id="nome"
+                  name="nome"
+                  type="text"
+                  [(ngModel)]="novoCurso.nome"
+                  placeholder="Ex: Análise e Desenvolvimento de Sistemas"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="sigla">Sigla</label>
+
+                <input
+                  id="sigla"
+                  name="sigla"
+                  type="text"
+                  [(ngModel)]="novoCurso.sigla"
+                  placeholder="Ex: ADS"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="status">Status</label>
+
+                <select
+                  id="status"
+                  name="status"
+                  [(ngModel)]="novoCurso.status"
+                >
+                  <option value="ativo">Ativo</option>
+                  <option value="inativo">Inativo</option>
+                </select>
+              </div>
+
+              <div class="form-group full-field">
+                <label for="descricao">Descrição</label>
+
+                <textarea
+                  id="descricao"
+                  name="descricao"
+                  rows="3"
+                  [(ngModel)]="novoCurso.descricao"
+                  placeholder="Breve descrição do curso"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary" [disabled]="salvando">
+                <i class="bi bi-plus-lg"></i>
+
+                @if (salvando) {
+                  Salvando...
+                } @else {
+                  Cadastrar curso
+                }
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <section class="list-card">
+          <div class="list-header">
+            <div>
+              <h3>Cursos cadastrados</h3>
+              <p>Lista de cursos registrados na plataforma.</p>
+            </div>
+          </div>
+
+          <div class="filters-row">
+            <div class="search-box">
+              <i class="bi bi-search"></i>
+
+              <input
+                type="text"
+                placeholder="Buscar por nome, sigla ou descrição..."
+                [(ngModel)]="termoBusca"
+              />
+            </div>
+
+            <select [(ngModel)]="filtroStatus">
+              <option value="todos">Todos os status</option>
+              <option value="ativo">Ativos</option>
+              <option value="inativo">Inativos</option>
+            </select>
+          </div>
+
+          @if (cursosFiltrados.length === 0) {
+            <div class="empty-state">
+              <i class="bi bi-journal-x"></i>
+
+              <h3>Nenhum curso encontrado</h3>
+
+              <p>Tente alterar os filtros ou cadastrar um novo curso.</p>
+            </div>
+          } @else {
+            <div class="cards-grid">
+              @for (curso of cursosFiltrados; track curso.id_curso) {
+                <article class="course-card">
+                  <div class="course-header">
+                    <div class="course-icon">
+                      {{ curso.sigla.charAt(0) }}
+                    </div>
+
+                    <div>
+                      <h4>{{ curso.sigla }}</h4>
+                      <span class="status-badge {{ classeStatus(curso.status) }}">
+                        {{ curso.status }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <h3>{{ curso.nome }}</h3>
+
+                  <p>
+                    {{ curso.descricao || 'Nenhuma descrição cadastrada para este curso.' }}
+                  </p>
+
+                  <div class="card-actions">
+                    <button
+                      type="button"
+                      class="btn-action"
+                      [disabled]="processandoId === curso.id_curso"
+                      (click)="alterarStatus(curso)"
+                    >
+                      @if (curso.status === 'ativo') {
+                        <i class="bi bi-pause-circle"></i>
+                        Inativar
+                      } @else {
+                        <i class="bi bi-check-circle"></i>
+                        Ativar
+                      }
+                    </button>
+                  </div>
+                </article>
+              }
+            </div>
+          }
+        </section>
+      }
+    </div>
+  </main>
+</section>
